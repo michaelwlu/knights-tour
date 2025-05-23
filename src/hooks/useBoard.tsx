@@ -5,9 +5,11 @@ import {
 	isAvailable,
 	NOT_VISITED,
 } from "../lib/boardUtils";
-import { BoardDimensions } from "./useBoardConfig";
 
-type UseBoardProps = BoardDimensions;
+type UseBoardProps = {
+	rows: number;
+	columns: number;
+};
 
 export type UseBoardReturn = {
 	board: number[][];
