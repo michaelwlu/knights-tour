@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/popover";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { useBoardContext } from "@/context/BoardContext";
-import { Settings2 } from "lucide-react";
+import { Grip } from "lucide-react";
 import { useEffect, useState } from "react";
 import BoardDimensionsOption from "./BoardDimensionsOption";
 import { BOARD_DIMENSION_OPTIONS } from "./dimensionOptions";
@@ -30,8 +30,8 @@ const ConfigBoardDimensions = () => {
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
-				<Button variant="outline" className="h-10">
-					<Settings2 className="h-[1.5rem] w-[1.5rem] rotate-0 scale-100" />
+				<Button variant="outline">
+					<Grip className="h-[1.5rem] w-[1.5rem] rotate-0 scale-100" />
 					{boardDimensions.rows} x {boardDimensions.columns}
 				</Button>
 			</PopoverTrigger>

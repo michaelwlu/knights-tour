@@ -52,12 +52,11 @@ const GameTimer = () => {
 		: "#52525b";
 
 	return (
-		<span>
-			<div className="flex items-center gap-2 text-lg">
-				<Timer className="h-[1.2rem] w-[1.2rem]" color={timerColor} />
-				{formatTime(elapsed)}
-			</div>
-		</span>
+		<div className="flex items-center gap-2 text-lg">
+			<Timer className="h-[1.2rem] w-[1.2rem] mb-0.5" color={timerColor} />
+			{formatTime(elapsed)}
+			{isCompleted && <span className="ml-1 text-base">🏆</span>}
+		</div>
 	);
 };
 
