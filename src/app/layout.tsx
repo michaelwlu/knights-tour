@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 	title: "Knight's Tour",
-	description: "The classic game",
+	description:
+		"A chess puzzle where you move a knight to visit every square on the board exactly once",
 };
 
 export default function RootLayout({
@@ -40,7 +41,7 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="h-screen overflow-hidden px-4 sm:px-0">
+					<div className="h-screen px-4 overflow-hidden sm:px-0">
 						{children}
 					</div>
 				</ThemeProvider>
