@@ -1,60 +1,32 @@
 import { useBoardContext } from "@/context/BoardContext";
-import { Timer } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-
-const formatTime = (seconds: number) => {
-	if (seconds >= 3600) {
-		const h = Math.floor(seconds / 3600)
-			.toString()
-			.padStart(2, "0");
-		const m = Math.floor((seconds % 3600) / 60)
-			.toString()
-			.padStart(2, "0");
-		const s = (seconds % 60).toString().padStart(2, "0");
-		return `${h}:${m}:${s}`;
-	} else {
-		const m = Math.floor(seconds / 60)
-			.toString()
-			.padStart(2, "0");
-		const s = (seconds % 60).toString().padStart(2, "0");
-		return `${m}:${s}`;
-	}
-};
+import { Timer, TimerReset } from "lucide-react";
 
 const GameTimer = () => {
-	const { isStarted, isCompleted } = useBoardContext();
-	const [elapsed, setElapsed] = useState(0);
-	const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-	useEffect(() => {
-		if (isStarted && !isCompleted) {
-			intervalRef.current = setInterval(() => {
-				setElapsed((t) => t + 1);
-			}, 1000);
-		} else if (intervalRef.current) {
-			clearInterval(intervalRef.current);
-			intervalRef.current = null;
-		}
-		return () => {
-			if (intervalRef.current) clearInterval(intervalRef.current);
-		};
-	}, [isStarted, isCompleted]);
-
-	// Optionally reset timer when game is not started
-	useEffect(() => {
-		if (!isStarted) setElapsed(0);
-	}, [isStarted]);
+	const { isStarted, isCompleted, elapsedTime, formatTime } = useBoardContext();
 
 	const timerColor = isCompleted
 		? "#16a34a"
 		: isStarted
 		? "#d97706"
-		: "#52525b";
+		: "#a1a1aa";
 
 	return (
-		<div className="flex items-center gap-2 text-lg">
-			<Timer className="h-[1.2rem] w-[1.2rem] mb-0.5" color={timerColor} />
-			{formatTime(elapsed)}
+		<div className="flex items-center gap-1.5 text-lg">
+			{!isStarted ? (
+				<TimerReset
+					className="h-[1.3rem] w-[1.3rem] mb-0.5"
+					color={timerColor}
+				/>
+			) : isCompleted ? (
+				<TimerReset
+					className="h-[1.3rem] w-[1.3rem] mb-0.5"
+					color={timerColor}
+				/>
+			) : (
+				<Timer className="h-[1.3rem] w-[1.3rem] mb-0.5" color={timerColor} />
+			)}
+
+			<span className="timer-text">{formatTime(elapsedTime)}</span>
 			{isCompleted && <span className="ml-1 text-base">🏆</span>}
 		</div>
 	);

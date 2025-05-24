@@ -1,11 +1,10 @@
 "use client";
+import { BoardProvider } from "@/context/BoardContext";
 import App from "../components/App";
-import { BoardContextProvider } from "../context/BoardContext";
-
 export default function Home() {
 	return (
-		<BoardContextProvider>
+		<BoardProvider>
 			<App />
-		</BoardContextProvider>
+		</BoardProvider>
 	);
 }

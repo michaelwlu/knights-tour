@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Undo } from "lucide-react";
+import { Undo2 } from "lucide-react";
 import { useBoardContext } from "../../context/BoardContext";
 
 const UndoButton = () => {
-	const { handleUndoLastMove, isStarted } = useBoardContext();
+	const { handleUndoLastMove, isStarted, isCompleted } = useBoardContext();
 	return (
-		<Button
-			onClick={handleUndoLastMove}
-			variant="outline"
-			disabled={!isStarted}
-		>
-			<Undo /> Undo
-		</Button>
+		!isCompleted && (
+			<Button
+				onClick={handleUndoLastMove}
+				variant="outline"
+				disabled={!isStarted}
+			>
+				<Undo2 /> Undo
+			</Button>
+		)
 	);
 };
 

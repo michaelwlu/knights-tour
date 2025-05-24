@@ -1,26 +1,47 @@
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { GITHUB_URL, WIKIPEDIA_URL } from "@/lib/urls";
 import { cn } from "@/lib/utils";
-import { HelpCircle } from "lucide-react";
+import { ExternalLink, HelpCircle } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "../ui/dialog";
 
 const Instructions = () => {
+	// Default to "Click" and update based on media query
+	const [actionWord, setActionWord] = useState("Click");
+	// Match mobile devices (screen width less than 768px)
+	const isMobile = useMediaQuery("(max-width: 767px)");
+
+	// Update action word when media query changes
+	useEffect(() => {
+		setActionWord(isMobile ? "Tap" : "Click");
+	}, [isMobile]);
+
 	return (
-		<Popover>
-			<PopoverTrigger asChild>
-				<Button variant="outline">
-					<HelpCircle />
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button variant="outline" size="icon">
+					<HelpCircle className="h-[1.2rem] w-[1.2rem]" />
 					<span className="sr-only">How to Play</span>
 				</Button>
-			</PopoverTrigger>
-			<PopoverContent className="w-80" align="center">
-				<div className="space-y-2">
-					<h2 className="font-medium text-lg">How to Play</h2>
-
-					<ul className="space-y-2 text-sm">
+			</DialogTrigger>
+			<DialogContent className="sm:max-w-md">
+				<DialogHeader className="text-left">
+					<DialogTitle className="text-2xl">How to Play</DialogTitle>
+				</DialogHeader>
+				<div className="mt-1 space-y-6">
+					<ul className="space-y-3 text-base text-foreground/80">
 						<li className={cn("flex items-start gap-2")}>
 							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-5 h-5 mt-0.5 flex-shrink-0" />
 							<span>
-								Click any square to start. The knight will move there.
+								{actionWord} any square to start. The knight will move there.
 							</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>
@@ -44,8 +65,8 @@ const Instructions = () => {
 						<li className={cn("flex items-start gap-2")}>
 							<span className="font-medium">↩️</span>
 							<span>
-								Click the last moved square or the Undo button to undo your
-								move.
+								{actionWord} the last moved square or the Undo button to undo
+								your move.
 							</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>
@@ -53,9 +74,34 @@ const Instructions = () => {
 							<span>You win by visiting every square exactly once!</span>
 						</li>
 					</ul>
+
+					<div className="flex justify-between w-full space-x-2">
+						<Button asChild size="sm" variant="outline" className="flex-1/2">
+							<Link
+								href={WIKIPEDIA_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center gap-1"
+							>
+								Wikipedia
+								<ExternalLink className="h-3.5 w-3.5" />
+							</Link>
+						</Button>
+						<Button asChild size="sm" variant="outline" className="flex-1/2">
+							<Link
+								href={GITHUB_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center gap-1"
+							>
+								GitHub
+								<ExternalLink className="h-3.5 w-3.5" />
+							</Link>
+						</Button>
+					</div>
 				</div>
-			</PopoverContent>
-		</Popover>
+			</DialogContent>
+		</Dialog>
 	);
 };
 
