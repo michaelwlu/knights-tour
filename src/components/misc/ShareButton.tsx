@@ -13,7 +13,8 @@ const ShareButton = () => {
 		const boardSize = `${rows}×${columns}`;
 		const timeFormatted = formatTime(elapsedTime);
 
-		const shareText = `I completed the Knight's Tour on a ${boardSize} board in ${timeFormatted}! Can you solve it too? 🧐 Play at ${SITE_URL}`;
+		// Don't include the URL in the share text since the Web Share API adds it separately
+		const shareText = `I completed the Knight's Tour on a ${boardSize} board in ${timeFormatted}! Can you solve it too? 🧐`;
 
 		// Check if the Web Share API is supported
 		if (navigator.share) {
