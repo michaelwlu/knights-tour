@@ -1,69 +1,92 @@
 import { Button } from "@/components/ui/button";
 import { useBoardContext } from "@/context/BoardContext";
 import { SITE_URL } from "@/lib/constants";
-import { Send } from "lucide-react";
+import { Copy, CopyCheck, Send } from "lucide-react";
+import { useState } from "react";
 
 const ShareButton = () => {
 	const { isCompleted, boardDimensions, elapsedTime, formatTime, difficulty } =
 		useBoardContext();
+	const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
-	const handleShare = () => {
-		// Create share message with game stats
+	// Create share message with game stats
+	const createShareText = () => {
 		const { rows, columns } = boardDimensions;
 		const boardSize = `${rows}×${columns}`;
 		const timeFormatted = formatTime(elapsedTime);
+		return `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}!`;
+	};
 
-		// Don't include the URL in the share text since the Web Share API adds it separately
-		const shareText = `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}!`;
+	const handleShare = () => {
+		const shareText = createShareText();
 
 		// Check if the Web Share API is supported
 		if (navigator.share) {
 			navigator
 				.share({
-					title: "Play the Knight's Tour Puzzle",
+					title: "Knight's Tour",
 					text: shareText,
-					url: "https://" + SITE_URL,
+					url: SITE_URL,
 				})
 				.catch((error) => {
-					console.log("Error sharing", error);
-					// Only use fallback if it's not a user abort error
+					console.log("Sharing failed:", error);
 					if (error.name !== "AbortError") {
-						fallbackShare(shareText);
+						copyToClipboard(shareText);
 					}
 				});
 		} else {
-			fallbackShare(shareText);
+			copyToClipboard(shareText);
 		}
 	};
 
-	// Fallback share mechanism
-	const fallbackShare = (text: string) => {
-		// Add URL for clipboard sharing since it won't be automatically added like in Web Share API
+	// Copy to clipboard function
+	const copyToClipboard = (text: string) => {
+		// Add URL for clipboard sharing
 		const textWithUrl = `${text}\n\nPlay at: ${SITE_URL}`;
 
+		// Use clipboard API with fallback
 		try {
 			navigator.clipboard
 				.writeText(textWithUrl)
 				.then(() => {
-					alert("Share text copied to clipboard!");
+					// Show success message briefly
+					setShowCopiedMessage(true);
+					setTimeout(() => setShowCopiedMessage(false), 2000);
 				})
-				.catch(() => {
+				.catch((err) => {
+					console.error("Clipboard write failed:", err);
 					alert("Please manually copy and share:\n\n" + textWithUrl);
 				});
-		} catch {
-			// Error ignored, just show the fallback alert
+		} catch (err) {
+			console.error("Clipboard API not available:", err);
 			alert("Please manually copy and share:\n\n" + textWithUrl);
 		}
 	};
 
-	return (
-		isCompleted && (
-			<Button onClick={isCompleted ? handleShare : undefined} variant="default">
-				<Send className="w-4 h-4" />
-				Share Score
+	return isCompleted ? (
+		<div className="inline-flex rounded-md shadow-sm">
+			<Button
+				onClick={handleShare}
+				variant="default"
+				className="rounded-r-none"
+			>
+				<Send className="w-4 h-4 mr-2" />
+				{showCopiedMessage ? "Copied!" : "Share Score"}
 			</Button>
-		)
-	);
+			<Button
+				onClick={() => copyToClipboard(createShareText())}
+				variant="default"
+				className="border-l rounded-l-none border-primary-foreground/80"
+				title="Copy to clipboard"
+			>
+				{showCopiedMessage ? (
+					<CopyCheck className="w-4 h-4" />
+				) : (
+					<Copy className="w-4 h-4" />
+				)}
+			</Button>
+		</div>
+	) : null;
 };
 
 export default ShareButton;
