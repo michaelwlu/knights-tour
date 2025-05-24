@@ -38,18 +38,21 @@ const ShareButton = () => {
 
 	// Fallback share mechanism
 	const fallbackShare = (text: string) => {
+		// Add URL for clipboard sharing since it won't be automatically added like in Web Share API
+		const textWithUrl = `${text}\n\nPlay at ${SITE_URL}`;
+
 		try {
 			navigator.clipboard
-				.writeText(text)
+				.writeText(textWithUrl)
 				.then(() => {
 					alert("Share text copied to clipboard!");
 				})
 				.catch(() => {
-					alert("Please manually copy and share:\n\n" + text);
+					alert("Please manually copy and share:\n\n" + textWithUrl);
 				});
 		} catch {
 			// Error ignored, just show the fallback alert
-			alert("Please manually copy and share:\n\n" + text);
+			alert("Please manually copy and share:\n\n" + textWithUrl);
 		}
 	};
 
