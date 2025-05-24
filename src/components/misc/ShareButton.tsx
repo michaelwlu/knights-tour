@@ -25,7 +25,10 @@ const ShareButton = () => {
 				})
 				.catch((error) => {
 					console.log("Error sharing", error);
-					fallbackShare(shareText);
+					// Only use fallback if it's not a user abort error
+					if (error.name !== "AbortError") {
+						fallbackShare(shareText);
+					}
 				});
 		} else {
 			fallbackShare(shareText);
@@ -41,11 +44,11 @@ const ShareButton = () => {
 					alert("Share text copied to clipboard!");
 				})
 				.catch(() => {
-					alert("Please manually copy and share: " + text);
+					alert("Please manually copy and share:\n\n" + text);
 				});
 		} catch {
 			// Error ignored, just show the fallback alert
-			alert("Please manually copy and share: " + text);
+			alert("Please manually copy and share:\n\n" + text);
 		}
 	};
 
