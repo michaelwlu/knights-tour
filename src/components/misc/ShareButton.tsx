@@ -22,7 +22,7 @@ const ShareButton = () => {
 				.share({
 					title: "Play the Knight's Tour Puzzle",
 					text: shareText,
-					url: SITE_URL,
+					url: "https://" + SITE_URL,
 				})
 				.catch((error) => {
 					console.log("Error sharing", error);
