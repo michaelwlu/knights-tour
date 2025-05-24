@@ -14,7 +14,7 @@ const ShareButton = () => {
 		const timeFormatted = formatTime(elapsedTime);
 
 		// Don't include the URL in the share text since the Web Share API adds it separately
-		const shareText = `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}! Can you solve it too? 🧐`;
+		const shareText = `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}!`;
 
 		// Check if the Web Share API is supported
 		if (navigator.share) {
