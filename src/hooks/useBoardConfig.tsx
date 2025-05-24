@@ -1,32 +1,35 @@
 import { BOARD_DIMENSION_OPTIONS } from "@/components/config-dimensions/dimensionOptions";
-import { BoardDimensionOption } from "@/components/types/types";
+import { BoardDimensionOption, Difficulty } from "@/lib/types";
 import { useState } from "react";
 
 export type UseBoardConfigReturn = {
 	boardDimensions: BoardDimensionOption;
-	handleSetBoardDimensions: (
-		boardDimensionOption: BoardDimensionOption
-	) => void;
+	setBoardDimensions: React.Dispatch<
+		React.SetStateAction<BoardDimensionOption>
+	>;
+	difficulty: Difficulty;
+	setDifficulty: React.Dispatch<React.SetStateAction<Difficulty>>;
+	allowUndo: boolean;
 	highlightValidMoves: boolean;
-	setHighlightValidMoves: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const useBoardConfig = (): UseBoardConfigReturn => {
 	const [boardDimensions, setBoardDimensions] = useState<BoardDimensionOption>(
 		BOARD_DIMENSION_OPTIONS[0]
 	);
-	const [highlightValidMoves, setHighlightValidMoves] =
-		useState<boolean>(false);
 
-	const handleSetBoardDimensions = (
-		boardDimensionOption: BoardDimensionOption
-	): void => setBoardDimensions(boardDimensionOption);
+	const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.Easy);
+	const allowUndo =
+		difficulty === Difficulty.Easy || difficulty === Difficulty.Medium;
+	const highlightValidMoves = difficulty === Difficulty.Easy;
 
 	return {
 		boardDimensions,
-		handleSetBoardDimensions,
+		setBoardDimensions,
+		difficulty,
+		setDifficulty,
+		allowUndo,
 		highlightValidMoves,
-		setHighlightValidMoves,
 	};
 };
 

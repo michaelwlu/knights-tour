@@ -3,3 +3,9 @@ export type BoardDimensionOption = {
 	rows: number;
 	columns: number;
 };
+
+export enum Difficulty {
+	Easy = "Easy",
+	Medium = "Medium",
+	Hard = "Hard",
+}

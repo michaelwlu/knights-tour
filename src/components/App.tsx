@@ -1,12 +1,12 @@
 import { ModeToggle } from "@/components/misc/ModeToggle";
 import Board from "./board/Board";
+import ConfigDifficulty from "./config-difficulty/ConfigDifficulty";
 import ConfigBoardDimensions from "./config-dimensions/ConfigBoardDimensions";
 import GameTimer from "./misc/GameTimer";
 import Instructions from "./misc/Instructions";
 import RestartButton from "./misc/RestartButton";
 import ShareButton from "./misc/ShareButton";
 import UndoButton from "./misc/UndoButton";
-import ValidMovesToggle from "./misc/ValidMovesToggle";
 
 const App = () => {
 	return (
@@ -25,16 +25,17 @@ const App = () => {
 				</div>
 				<div className="flex items-center justify-between w-full gap-2 mt-2">
 					<GameTimer />
-					<ValidMovesToggle />
+					<div className="flex items-center justify-end gap-2">
+						<ConfigBoardDimensions />
+						<ConfigDifficulty />
+					</div>
 				</div>
 				<Board />
-				<div className="flex items-center justify-between w-full gap-3 mt-2">
-					<ConfigBoardDimensions />
-					<div className="flex items-center justify-end gap-2">
-						<UndoButton />
-						<ShareButton />
-						<RestartButton />
-					</div>
+				<div className="flex items-center justify-around gap-3 mt-2">
+					<UndoButton />
+					<ShareButton />
+					<RestartButton />
+					{/* <div className="flex items-center justify-between gap-2"></div> */}
 				</div>
 			</div>
 		</div>

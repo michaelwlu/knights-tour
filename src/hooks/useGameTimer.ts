@@ -3,15 +3,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 interface UseGameTimerProps {
 	isStarted: boolean;
 	isCompleted: boolean;
+	isDeadEnd: boolean;
 }
 
-export function useGameTimer({ isStarted, isCompleted }: UseGameTimerProps) {
+export function useGameTimer({
+	isStarted,
+	isCompleted,
+	isDeadEnd,
+}: UseGameTimerProps) {
 	const [elapsedTime, setElapsedTime] = useState(0);
 	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	// Start/stop timer based on game state
 	useEffect(() => {
-		if (isStarted && !isCompleted) {
+		if (isStarted && !isCompleted && !isDeadEnd) {
 			intervalRef.current = setInterval(() => {
 				setElapsedTime((t) => t + 1);
 			}, 1000);
@@ -22,7 +27,7 @@ export function useGameTimer({ isStarted, isCompleted }: UseGameTimerProps) {
 		return () => {
 			if (intervalRef.current) clearInterval(intervalRef.current);
 		};
-	}, [isStarted, isCompleted]);
+	}, [isStarted, isCompleted, isDeadEnd]);
 
 	// Reset timer when game is not started
 	useEffect(() => {

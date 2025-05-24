@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { GITHUB_URL, WIKIPEDIA_URL } from "@/lib/urls";
+import { GITHUB_URL, WIKIPEDIA_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { ExternalLink, HelpCircle } from "lucide-react";
 import Link from "next/link";
@@ -27,7 +27,7 @@ const Instructions = () => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline" size="icon">
+				<Button variant="ghost">
 					<HelpCircle className="h-[1.2rem] w-[1.2rem]" />
 					<span className="sr-only">How to Play</span>
 				</Button>
@@ -45,10 +45,6 @@ const Instructions = () => {
 							</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>
-							<div className="rounded-full bg-amber-100 dark:bg-amber-950 w-5 h-5 mt-0.5 flex-shrink-0" />
-							<span>Valid moves are highlighted (can be toggled).</span>
-						</li>
-						<li className={cn("flex items-start gap-2")}>
 							<div className="rounded-full bg-zinc-200 dark:bg-zinc-700 w-5 h-5 mt-0.5 flex-shrink-0" />
 							<span>Each square can only be visited once.</span>
 						</li>
@@ -63,10 +59,16 @@ const Instructions = () => {
 							<span>Red indicates a dead end with no valid moves left.</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>
+							<span className="font-medium">⚙️</span>
+							<span>
+								Set board size and difficulty using the controls at the top.
+							</span>
+						</li>
+						<li className={cn("flex items-start gap-2")}>
 							<span className="font-medium">↩️</span>
 							<span>
-								{actionWord} the last moved square or the Undo button to undo
-								your move.
+								{actionWord} the last square or the Undo button to undo your
+								move (if enabled).
 							</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>

@@ -14,7 +14,7 @@ import BoardDimensionsOption from "./BoardDimensionsOption";
 import { BOARD_DIMENSION_OPTIONS } from "./dimensionOptions";
 
 const ConfigBoardDimensions = () => {
-	const { boardDimensions, handleSetBoardDimensions } = useBoardContext();
+	const { boardDimensions, setBoardDimensions } = useBoardContext();
 
 	const [selected, setSelected] = useState(boardDimensions.label);
 	const [open, setOpen] = useState(false);
@@ -42,11 +42,7 @@ const ConfigBoardDimensions = () => {
 					<DialogTitle className="text-xl">Set Board Dimensions</DialogTitle>
 				</DialogHeader>
 				<div className="mt-1 space-y-5">
-					<RadioGroup
-						value={selected}
-						onValueChange={setSelected}
-						className="space-y-2"
-					>
+					<RadioGroup value={selected} onValueChange={setSelected}>
 						{BOARD_DIMENSION_OPTIONS.map(({ label, rows, columns }) => (
 							<BoardDimensionsOption
 								key={label}
@@ -63,7 +59,7 @@ const ConfigBoardDimensions = () => {
 						className="w-full"
 						variant="default"
 						onClick={() => {
-							handleSetBoardDimensions(selectedDimensionOption);
+							setBoardDimensions(selectedDimensionOption);
 							setOpen(false);
 						}}
 					>

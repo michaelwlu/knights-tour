@@ -1,3 +1,4 @@
+import { Difficulty } from "@/lib/types";
 import { useCallback, useEffect, useState } from "react";
 import {
 	createBoard,
@@ -9,6 +10,7 @@ import {
 type UseBoardProps = {
 	rows: number;
 	columns: number;
+	difficulty: Difficulty;
 };
 
 export type UseBoardReturn = {
@@ -26,7 +28,11 @@ export type UseBoardReturn = {
 	handleResetBoard: () => void;
 };
 
-const useBoard = ({ rows, columns }: UseBoardProps): UseBoardReturn => {
+const useBoard = ({
+	rows,
+	columns,
+	difficulty,
+}: UseBoardProps): UseBoardReturn => {
 	const [board, setBoard] = useState<number[][]>(createBoard(rows, columns));
 	const [moveHistory, setMoveHistory] = useState<number[][]>([]);
 
@@ -77,6 +83,11 @@ const useBoard = ({ rows, columns }: UseBoardProps): UseBoardReturn => {
 	useEffect(() => {
 		handleResetBoard();
 	}, [rows, columns, handleResetBoard]);
+
+	// Reset board if difficulty changes
+	useEffect(() => {
+		handleResetBoard();
+	}, [difficulty, handleResetBoard]);
 
 	const isStarted: boolean = moveHistory.length > 0;
 

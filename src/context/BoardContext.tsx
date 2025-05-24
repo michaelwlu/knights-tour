@@ -4,20 +4,28 @@ import { useGameTimer } from "@/hooks/useGameTimer";
 import React, { createContext, useContext } from "react";
 
 type BoardContextType = ReturnType<typeof useBoardConfig> &
-	ReturnType<typeof useBoard> & {
-		elapsedTime: number;
-		formatTime: (seconds: number) => string;
-	};
+	ReturnType<typeof useBoard> &
+	ReturnType<typeof useGameTimer>;
 
 const BoardContext = createContext<BoardContextType | undefined>(undefined);
 
 export const BoardProvider = ({ children }: { children: React.ReactNode }) => {
 	const boardConfig = useBoardConfig();
 
-	const board = useBoard(boardConfig.boardDimensions);
-	const { isStarted, isCompleted } = board;
+	const { boardDimensions, difficulty } = boardConfig;
 
-	const gameTimer = useGameTimer({ isStarted, isCompleted });
+	const board = useBoard({
+		...boardDimensions,
+		difficulty,
+	});
+
+	const { isStarted, isCompleted, isDeadEnd } = board;
+
+	const gameTimer = useGameTimer({
+		isStarted,
+		isCompleted,
+		isDeadEnd,
+	});
 
 	return (
 		<BoardContext.Provider value={{ ...boardConfig, ...board, ...gameTimer }}>

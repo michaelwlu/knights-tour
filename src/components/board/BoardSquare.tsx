@@ -26,6 +26,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		isDeadEnd,
 		isCompleted,
 		highlightValidMoves,
+		allowUndo,
 	} = useBoardContext();
 
 	if (board[row]?.[column] === undefined) {
@@ -47,7 +48,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 	if (isCompleted) {
 		return (
 			<CompletedBoardSquareButton
-				onClick={() => lastMove && handleUndoLastMove()}
+				onClick={() => lastMove && allowUndo && handleUndoLastMove()}
 				className={borderClasses}
 			>
 				{moveNumber}
@@ -59,7 +60,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		if (isDeadEnd) {
 			return (
 				<DeadEndSquareButton
-					onClick={handleUndoLastMove}
+					onClick={() => allowUndo && handleUndoLastMove()}
 					className={borderClasses}
 				>
 					{moveNumber}
@@ -68,7 +69,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		} else {
 			return (
 				<LastMoveSquareButton
-					onClick={handleUndoLastMove}
+					onClick={() => allowUndo && handleUndoLastMove()}
 					className={borderClasses}
 				>
 					{moveNumber}

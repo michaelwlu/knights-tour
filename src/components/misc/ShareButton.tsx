@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useBoardContext } from "@/context/BoardContext";
-import { SITE_URL } from "@/lib/urls";
+import { SITE_URL } from "@/lib/constants";
 import { Send } from "lucide-react";
 
 const ShareButton = () => {
-	const { isCompleted, boardDimensions, elapsedTime, formatTime } =
+	const { isCompleted, boardDimensions, elapsedTime, formatTime, difficulty } =
 		useBoardContext();
 
 	const handleShare = () => {
@@ -14,7 +14,7 @@ const ShareButton = () => {
 		const timeFormatted = formatTime(elapsedTime);
 
 		// Don't include the URL in the share text since the Web Share API adds it separately
-		const shareText = `I completed the Knight's Tour on a ${boardSize} board in ${timeFormatted}! Can you solve it too? 🧐`;
+		const shareText = `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}! Can you solve it too? 🧐`;
 
 		// Check if the Web Share API is supported
 		if (navigator.share) {
@@ -39,7 +39,7 @@ const ShareButton = () => {
 	// Fallback share mechanism
 	const fallbackShare = (text: string) => {
 		// Add URL for clipboard sharing since it won't be automatically added like in Web Share API
-		const textWithUrl = `${text}\n\nPlay at ${SITE_URL}`;
+		const textWithUrl = `${text}\n\nPlay at: ${SITE_URL}`;
 
 		try {
 			navigator.clipboard
