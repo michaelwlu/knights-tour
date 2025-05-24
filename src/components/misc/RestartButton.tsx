@@ -6,7 +6,8 @@ const RestartButton = () => {
 	const { handleResetBoard, isStarted } = useBoardContext();
 	return (
 		<Button onClick={handleResetBoard} variant="outline" disabled={!isStarted}>
-			<RotateCcw /> Restart
+			<RotateCcw />
+			Reset
 		</Button>
 	);
 };

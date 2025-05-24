@@ -23,19 +23,18 @@ const App = () => {
 						<ModeToggle />
 					</div>
 				</div>
-				<div className="flex items-center justify-between w-full gap-2 mt-2">
+				<div className="flex items-center justify-between w-full gap-3 mt-2">
 					<GameTimer />
-					<div className="flex items-center justify-end gap-2">
+					<div className="flex items-center justify-end gap-3">
 						<ConfigBoardDimensions />
 						<ConfigDifficulty />
 					</div>
 				</div>
 				<Board />
-				<div className="flex items-center justify-around gap-3 mt-2">
+				<div className="flex items-center justify-around gap-3 mt-0.5">
 					<UndoButton />
 					<ShareButton />
 					<RestartButton />
-					{/* <div className="flex items-center justify-between gap-2"></div> */}
 				</div>
 			</div>
 		</div>
