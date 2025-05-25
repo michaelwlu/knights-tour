@@ -45,7 +45,7 @@ const Instructions = () => {
 							</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>
-							<div className="rounded-full bg-zinc-200 dark:bg-zinc-700 w-5 h-5 mt-0.5 flex-shrink-0" />
+							<div className="rounded-full bg-zinc-300 dark:bg-zinc-700 w-5 h-5 mt-0.5 flex-shrink-0" />
 							<span>Each square can only be visited once.</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>
@@ -61,14 +61,15 @@ const Instructions = () => {
 						<li className={cn("flex items-start gap-2")}>
 							<span className="font-medium">⚙️</span>
 							<span>
-								Set board size and difficulty using the controls at the top.
+								Set board dimensions and difficulty using the controls at the
+								top.
 							</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>
 							<span className="font-medium">↩️</span>
 							<span>
 								{actionWord} the last square or the Undo button to undo your
-								move (if enabled).
+								move (if allowed).
 							</span>
 						</li>
 						<li className={cn("flex items-start gap-2")}>

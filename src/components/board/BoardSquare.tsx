@@ -60,7 +60,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 	const checkerboardClasses = !visited
 		? isEvenSquare
 			? ""
-			: "bg-zinc-100 dark:bg-zinc-900"
+			: "bg-zinc-200 dark:bg-zinc-800"
 		: "";
 
 	if (isCompleted) {

@@ -12,7 +12,7 @@ export const UnvisitedSquareButton = React.forwardRef<
 		ref={ref}
 		className={cn(
 			squareBase,
-			"bg-white dark:bg-black hover:bg-zinc-100 dark:hover:bg-zinc-700 text-black dark:text-white",
+			"bg-white dark:bg-zinc-950 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-black dark:text-white",
 			className
 		)}
 		style={style}
@@ -46,7 +46,7 @@ export const DeadEndSquareButton = React.forwardRef<
 		ref={ref}
 		className={cn(
 			squareBase,
-			"bg-red-200 dark:bg-red-900 hover:bg-red-300 dark:hover:bg-red-800 text-red-900 dark:text-red-100",
+			"bg-red-200 dark:bg-red-900 hover:bg-red-300 dark:hover:bg-red-800 text-red-950 dark:text-red-100",
 			className
 		)}
 		style={style}
@@ -63,7 +63,7 @@ export const VisitedSquareButton = React.forwardRef<
 		ref={ref}
 		className={cn(
 			squareBase,
-			"bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-gray-900 dark:text-gray-100",
+			"bg-zinc-300 dark:bg-zinc-700 text-gray-950 dark:text-gray-100",
 			className
 		)}
 		style={style}
