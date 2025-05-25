@@ -20,21 +20,27 @@ const Board = () => {
 			}, 0);
 		}
 	}, [rows, columns]);
+
+	// Determine the inner class based on aspect ratio
+	const innerClass = columns < rows ? "h-full" : "w-full";
+
 	return (
-		<div
-			ref={boardRef}
-			className="grid w-full max-w-[95vw] sm:max-w-[90vw]"
-			style={{
-				gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
-				gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-				aspectRatio: `${columns} / ${rows}`,
-			}}
-		>
-			{Array.from({ length: rows }).map((_, row) =>
-				Array.from({ length: columns }).map((_, col) => (
-					<BoardSquare key={`${row}-${col}`} row={row} column={col} />
-				))
-			)}
+		<div className="w-full max-w-[95vw] mx-auto flex items-center justify-center aspect-square">
+			<div
+				ref={boardRef}
+				className={`grid ${innerClass}`}
+				style={{
+					gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
+					gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+					aspectRatio: `${columns}/${rows}`,
+				}}
+			>
+				{Array.from({ length: rows }).map((_, row) =>
+					Array.from({ length: columns }).map((_, col) => (
+						<BoardSquare key={`${row}-${col}`} row={row} column={col} />
+					))
+				)}
+			</div>
 		</div>
 	);
 };

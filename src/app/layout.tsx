@@ -41,9 +41,7 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="h-screen px-4 overflow-hidden sm:px-0">
-						{children}
-					</div>
+					<div className="h-[100svh] overflow-hidden px-4 py-2">{children}</div>
 				</ThemeProvider>
 			</body>
 		</html>

@@ -86,7 +86,7 @@ const ConfigDifficulty = () => {
 				<DialogHeader className="text-left">
 					<DialogTitle className="text-xl">Set Difficulty</DialogTitle>
 				</DialogHeader>
-				<div className="mt-1 space-y-5">
+				<div className="mt-1 space-y-6">
 					<RadioGroup
 						value={selected}
 						onValueChange={(value) => setSelected(value as Difficulty)}
@@ -105,19 +105,21 @@ const ConfigDifficulty = () => {
 							<p>No description available.</p>
 						)}
 					</div>
-					<p className="text-sm text-muted-foreground">
-						Changing difficulty will reset your current progress
-					</p>
-					<Button
-						className="w-full"
-						variant="default"
-						onClick={() => {
-							setDifficulty(selected);
-							setOpen(false);
-						}}
-					>
-						Apply
-					</Button>
+					<div className="space-y-5">
+						<p className="text-sm text-muted-foreground">
+							Changing difficulty will reset your current progress
+						</p>
+						<Button
+							className="w-full"
+							variant="default"
+							onClick={() => {
+								setDifficulty(selected);
+								setOpen(false);
+							}}
+						>
+							Apply
+						</Button>
+					</div>
 				</div>
 			</DialogContent>
 		</Dialog>

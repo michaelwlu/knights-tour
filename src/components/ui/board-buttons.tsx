@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import * as React from "react";
 
 const squareBase =
-	"aspect-square rounded-none p-0 inline-flex items-center justify-center font-bold transition-all disabled:pointer-events-none disabled:opacity-50 text-lg";
+	"aspect-square rounded-none p-0 inline-flex items-center justify-center font-bold transition-all disabled:pointer-events-none disabled:opacity-50";
 
 export const UnvisitedSquareButton = React.forwardRef<
 	HTMLButtonElement,
@@ -12,7 +12,7 @@ export const UnvisitedSquareButton = React.forwardRef<
 		ref={ref}
 		className={cn(
 			squareBase,
-			"bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-black dark:text-white",
+			"bg-white dark:bg-black hover:bg-zinc-100 dark:hover:bg-zinc-700 text-black dark:text-white",
 			className
 		)}
 		style={style}
@@ -98,7 +98,7 @@ export const CompletedBoardSquareButton = React.forwardRef<
 		ref={ref}
 		className={cn(
 			squareBase,
-			"bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 text-gray-900 dark:text-green-100",
+			"bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 text-gray-900 dark:text-green-50",
 			className
 		)}
 		style={style}

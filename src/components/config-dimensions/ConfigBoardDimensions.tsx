@@ -8,26 +8,44 @@ import {
 } from "@/components/ui/dialog";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { useBoardContext } from "@/context/BoardContext";
+import { useDimensionsForm } from "@/hooks/useDimensionsForm";
 import { Grip } from "lucide-react";
 import { useEffect, useState } from "react";
 import BoardDimensionsOption from "./BoardDimensionsOption";
+import CustomDimensionsInput from "./CustomDimensionsInput";
 import { BOARD_DIMENSION_OPTIONS } from "./dimensionOptions";
 
 const ConfigBoardDimensions = () => {
-	const { boardDimensions, setBoardDimensions } = useBoardContext();
+	const {
+		boardDimensions,
+		setBoardDimensions,
+		isCustomBoard,
+		setCustomBoardDimensions,
+	} = useBoardContext();
 
-	const [selected, setSelected] = useState(boardDimensions.label);
+	const [selected, setSelected] = useState(
+		isCustomBoard ? "custom" : boardDimensions.label
+	);
 	const [open, setOpen] = useState(false);
 
+	// Use the custom hook for form logic, passing dialog open state
+	const { form, isValid } = useDimensionsForm(open);
+
 	const selectedDimensionOption =
-		BOARD_DIMENSION_OPTIONS.find(({ label }) => label === selected) ??
-		BOARD_DIMENSION_OPTIONS[0];
+		selected === "custom"
+			? boardDimensions // If custom is selected, use current board dimensions
+			: BOARD_DIMENSION_OPTIONS.find(({ label }) => label === selected) ||
+			  BOARD_DIMENSION_OPTIONS[0];
+
+	const selectCustom = () => {
+		setSelected("custom");
+	};
 
 	useEffect(() => {
 		if (!open) {
-			setSelected(boardDimensions.label);
+			setSelected(isCustomBoard ? "custom" : boardDimensions.label);
 		}
-	}, [open, boardDimensions.label]);
+	}, [open, boardDimensions.label, isCustomBoard]);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -37,11 +55,11 @@ const ConfigBoardDimensions = () => {
 					{boardDimensions.rows} × {boardDimensions.columns}
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-md">
+			<DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
 				<DialogHeader className="text-left">
 					<DialogTitle className="text-xl">Set Board Dimensions</DialogTitle>
 				</DialogHeader>
-				<div className="mt-1 space-y-5">
+				<div className="mt-1 space-y-7">
 					<RadioGroup value={selected} onValueChange={setSelected}>
 						{BOARD_DIMENSION_OPTIONS.map(({ label, rows, columns }) => (
 							<BoardDimensionsOption
@@ -51,20 +69,31 @@ const ConfigBoardDimensions = () => {
 								columns={columns}
 							/>
 						))}
+						<CustomDimensionsInput form={form} onSelect={selectCustom} />
 					</RadioGroup>
-					<p className="text-sm text-muted-foreground">
-						Changing board dimensions will reset your current progress
-					</p>
-					<Button
-						className="w-full"
-						variant="default"
-						onClick={() => {
-							setBoardDimensions(selectedDimensionOption);
-							setOpen(false);
-						}}
-					>
-						Apply
-					</Button>
+					<div className="space-y-5">
+						<p className="text-sm text-muted-foreground">
+							Changing board dimensions will reset your current progress
+						</p>
+						<Button
+							className="w-full"
+							variant="default"
+							disabled={selected === "custom" && !isValid}
+							onClick={() => {
+								if (selected === "custom") {
+									// Apply custom dimensions only when the Apply button is clicked
+									const values = form.getValues();
+									setCustomBoardDimensions(values.rows, values.columns);
+								} else {
+									// Apply standard dimensions
+									setBoardDimensions(selectedDimensionOption);
+								}
+								setOpen(false);
+							}}
+						>
+							Apply
+						</Button>
+					</div>
 				</div>
 			</DialogContent>
 		</Dialog>

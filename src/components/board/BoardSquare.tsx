@@ -27,6 +27,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		isCompleted,
 		highlightValidMoves,
 		allowUndo,
+		boardDimensions: { rows, columns },
 	} = useBoardContext();
 
 	if (board[row]?.[column] === undefined) {
@@ -45,11 +46,28 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		"border-b": true, // All cells get bottom border
 	});
 
+	const textClasses =
+		rows >= 11 || columns >= 11
+			? "text-sm"
+			: rows >= 10 || columns >= 10
+			? "text-base"
+			: "text-lg";
+
+	const combinedClasses = cn(borderClasses, textClasses);
+
+	// Determine checkerboard pattern for unvisited squares
+	const isEvenSquare = (row + column) % 2 === 0;
+	const checkerboardClasses = !visited
+		? isEvenSquare
+			? ""
+			: "bg-zinc-100 dark:bg-zinc-900"
+		: "";
+
 	if (isCompleted) {
 		return (
 			<CompletedBoardSquareButton
 				onClick={() => lastMove && allowUndo && handleUndoLastMove()}
-				className={borderClasses}
+				className={combinedClasses}
 			>
 				{moveNumber}
 			</CompletedBoardSquareButton>
@@ -61,7 +79,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 			return (
 				<DeadEndSquareButton
 					onClick={() => allowUndo && handleUndoLastMove()}
-					className={borderClasses}
+					className={combinedClasses}
 				>
 					{moveNumber}
 				</DeadEndSquareButton>
@@ -70,7 +88,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 			return (
 				<LastMoveSquareButton
 					onClick={() => allowUndo && handleUndoLastMove()}
-					className={borderClasses}
+					className={combinedClasses}
 				>
 					{moveNumber}
 				</LastMoveSquareButton>
@@ -79,18 +97,18 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 	}
 
 	return visited ? (
-		<VisitedSquareButton className={borderClasses}>
+		<VisitedSquareButton className={combinedClasses}>
 			{moveNumber}
 		</VisitedSquareButton>
 	) : highlightValidMoves && validMove && isStarted ? (
 		<ValidMoveSquareButton
 			onClick={() => validMove && handleMoveNext(row, column)}
-			className={borderClasses}
+			className={combinedClasses}
 		></ValidMoveSquareButton>
 	) : (
 		<UnvisitedSquareButton
 			onClick={() => validMove && handleMoveNext(row, column)}
-			className={borderClasses}
+			className={cn(combinedClasses, checkerboardClasses)}
 		></UnvisitedSquareButton>
 	);
 };

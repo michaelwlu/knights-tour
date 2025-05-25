@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useBoardContext } from "@/context/BoardContext";
 import { SITE_URL } from "@/lib/constants";
-import { Copy, CopyCheck, Send } from "lucide-react";
+import { Clipboard, ClipboardCheck, Send } from "lucide-react";
 import { useState } from "react";
 
 const ShareButton = () => {
@@ -80,9 +80,9 @@ const ShareButton = () => {
 				title="Copy to clipboard"
 			>
 				{showCopiedMessage ? (
-					<CopyCheck className="w-4 h-4" />
+					<ClipboardCheck className="w-4 h-4" />
 				) : (
-					<Copy className="w-4 h-4" />
+					<Clipboard className="w-4 h-4" />
 				)}
 			</Button>
 		</div>
