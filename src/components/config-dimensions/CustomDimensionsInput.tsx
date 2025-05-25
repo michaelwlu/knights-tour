@@ -67,7 +67,10 @@ const CustomDimensionsInput = ({
 											)}
 											inputMode="numeric"
 											pattern="[0-9]*"
-											onFocus={() => setRowsFocused(true)}
+											onFocus={(e) => {
+												setRowsFocused(true);
+												e.target.select();
+											}}
 											onBlur={() => {
 												field.onBlur();
 												setRowsFocused(false);
@@ -107,7 +110,10 @@ const CustomDimensionsInput = ({
 											)}
 											inputMode="numeric"
 											pattern="[0-9]*"
-											onFocus={() => setColumnsFocused(true)}
+											onFocus={(e) => {
+												setColumnsFocused(true);
+												e.target.select();
+											}}
 											onBlur={() => {
 												field.onBlur();
 												setColumnsFocused(false);
