@@ -5,8 +5,14 @@ import { Clipboard, ClipboardCheck, Send } from "lucide-react";
 import { useState } from "react";
 
 const ShareButton = () => {
-	const { isCompleted, boardDimensions, elapsedTime, formatTime, difficulty } =
-		useBoardContext();
+	const {
+		isCompleted,
+		boardDimensions,
+		elapsedTime,
+		formatTime,
+		difficulty,
+		hintsUsed,
+	} = useBoardContext();
 	const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
 	// Create share message with game stats
@@ -14,7 +20,11 @@ const ShareButton = () => {
 		const { rows, columns } = boardDimensions;
 		const boardSize = `${rows}×${columns}`;
 		const timeFormatted = formatTime(elapsedTime);
-		return `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}!`;
+		const hintsText =
+			hintsUsed > 0
+				? ` using ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`
+				: "";
+		return `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}${hintsText}!`;
 	};
 
 	const handleShare = () => {

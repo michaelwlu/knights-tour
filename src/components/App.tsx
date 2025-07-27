@@ -3,8 +3,9 @@ import Board from "./board/Board";
 import ConfigDifficulty from "./config-difficulty/ConfigDifficulty";
 import ConfigBoardDimensions from "./config-dimensions/ConfigBoardDimensions";
 import GameTimer from "./misc/GameTimer";
+import HintButton from "./misc/HintButton";
 import Instructions from "./misc/Instructions";
-import RestartButton from "./misc/RestartButton";
+import ResetButton from "./misc/ResetButton";
 import ShareButton from "./misc/ShareButton";
 import UndoButton from "./misc/UndoButton";
 
@@ -34,7 +35,8 @@ const App = () => {
 				<div className="flex items-center justify-around gap-3 mt-0.5">
 					<UndoButton />
 					<ShareButton />
-					<RestartButton />
+					<ResetButton />
+					<HintButton />
 				</div>
 			</div>
 		</div>

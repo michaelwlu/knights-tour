@@ -1,14 +1,9 @@
 import {
-	CompletedBoardSquareButton,
-	DeadEndSquareButton,
-	LastMoveSquareButton,
-	UnvisitedSquareButton,
-	ValidMoveSquareButton,
-	VisitedSquareButton,
+	BoardSquareButton,
+	BoardSquareVariant,
+	TextSizeVariant,
 } from "@/components/ui/board-buttons";
-import { cn } from "@/lib/utils";
 import { useBoardContext } from "../../context/BoardContext";
-import { NOT_VISITED } from "../../lib/boardUtils";
 
 type BoardSquareProps = {
 	row: number;
@@ -18,8 +13,10 @@ type BoardSquareProps = {
 const BoardSquare = ({ row, column }: BoardSquareProps) => {
 	const {
 		board,
-		isLastMove,
-		isValidMove,
+		getIsLastMove,
+		getIsValidMove,
+		getMoveNumber,
+		getIsVisited,
 		handleUndoLastMove,
 		handleMoveNext,
 		isStarted,
@@ -27,6 +24,8 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		isCompleted,
 		highlightValidMoves,
 		allowUndo,
+		isHintActive,
+		getIsHintSquare,
 		boardDimensions: { rows, columns },
 	} = useBoardContext();
 
@@ -34,82 +33,67 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		return null;
 	}
 
-	const lastMove: boolean = isLastMove(row, column);
-	const validMove: boolean = isValidMove(row, column);
-	const visited: boolean = board[row][column] !== NOT_VISITED;
-	const moveNumber: number = board[row][column] + 1;
+	const isLastMove: boolean = getIsLastMove([row, column]);
+	const validMove: boolean = getIsValidMove([row, column]);
+	const moveNumber: number = getMoveNumber([row, column]) + 1;
+	const isVisited: boolean = getIsVisited([row, column]);
+	const isHintSquare: boolean = getIsHintSquare([row, column]);
 
-	const borderClasses = cn("border-zinc-400 dark:border-zinc-400", {
-		"border-t": row === 0, // Top row gets top border
-		"border-l": column === 0, // Left column gets left border
-		"border-r": true, // All cells get right border
-		"border-b": true, // All cells get bottom border
-	});
-
-	const textClasses =
+	// Determine text size based on board dimensions
+	const textSize =
 		rows >= 11 || columns >= 11
-			? "text-sm"
+			? TextSizeVariant.SMALL
 			: rows >= 10 || columns >= 10
-			? "text-base"
-			: "text-lg";
+			? TextSizeVariant.MEDIUM
+			: TextSizeVariant.LARGE;
 
-	const combinedClasses = cn(borderClasses, textClasses);
-
-	// Determine checkerboard pattern for unvisited squares
+	// Determine if this is an even square for checkerboard pattern
 	const isEvenSquare = (row + column) % 2 === 0;
-	const checkerboardClasses = !visited
-		? isEvenSquare
-			? ""
-			: "bg-zinc-200 dark:bg-zinc-800"
-		: "";
+
+	// Determine the variant based on the square's state
+	let variant = BoardSquareVariant.UNVISITED;
 
 	if (isCompleted) {
-		return (
-			<CompletedBoardSquareButton
-				onClick={() => lastMove && allowUndo && handleUndoLastMove()}
-				className={combinedClasses}
-			>
-				{moveNumber}
-			</CompletedBoardSquareButton>
-		);
-	}
-
-	if (lastMove) {
-		if (isDeadEnd) {
-			return (
-				<DeadEndSquareButton
-					onClick={() => allowUndo && handleUndoLastMove()}
-					className={combinedClasses}
-				>
-					{moveNumber}
-				</DeadEndSquareButton>
-			);
-		} else {
-			return (
-				<LastMoveSquareButton
-					onClick={() => allowUndo && handleUndoLastMove()}
-					className={combinedClasses}
-				>
-					{moveNumber}
-				</LastMoveSquareButton>
-			);
+		variant = BoardSquareVariant.COMPLETED;
+	} else if (isLastMove) {
+		variant = isDeadEnd
+			? BoardSquareVariant.DEAD_END
+			: BoardSquareVariant.LAST_MOVE;
+	} else if (isVisited) {
+		variant = BoardSquareVariant.VISITED;
+	} else if (isStarted && validMove) {
+		if (isHintActive) {
+			// When hints are active, distinguish between hint squares and other valid moves
+			variant = isHintSquare
+				? BoardSquareVariant.VALID_MOVE // Full styling for hint squares
+				: BoardSquareVariant.HINT_VALID_MOVE; // Subtle styling for other valid moves
+		} else if (highlightValidMoves) {
+			// Normal behavior when hints are not active
+			variant = BoardSquareVariant.VALID_MOVE;
 		}
 	}
 
-	return visited ? (
-		<VisitedSquareButton className={combinedClasses}>
-			{moveNumber}
-		</VisitedSquareButton>
-	) : highlightValidMoves && validMove && isStarted ? (
-		<ValidMoveSquareButton
-			onClick={() => validMove && handleMoveNext(row, column)}
-			className={combinedClasses}
-		></ValidMoveSquareButton>
-	) : (
-		<UnvisitedSquareButton
-			onClick={() => validMove && handleMoveNext(row, column)}
-			className={cn(combinedClasses, checkerboardClasses)}
-		></UnvisitedSquareButton>
+	// Determine click handler
+	const handleClick = () => {
+		if (isLastMove && allowUndo) {
+			handleUndoLastMove();
+		} else if (!isVisited && validMove) {
+			handleMoveNext([row, column]);
+		}
+	};
+
+	return (
+		<BoardSquareButton
+			variant={variant}
+			isEvenSquare={isEvenSquare}
+			onClick={handleClick}
+			textSize={textSize}
+			row={row}
+			column={column}
+			isHintSquare={isHintActive && isHintSquare}
+		>
+			{isVisited ? moveNumber : ""}
+		</BoardSquareButton>
 	);
 };
 
