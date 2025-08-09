@@ -136,7 +136,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Hint Algorithm**: Eliminated suggestions that lead to dead-end positions
 - **Visual Effects**: Hint glow now properly extends beyond board edges
-- **Button Logic**: Share button only appears on completion; Undo button stays visible on game completion
+- **Button Logic**: Share button only appears on completion; Undo button stays visible on game completion for Easy and Medium difficulties
 
 ### [1.3.0] - 2025-08-08
 

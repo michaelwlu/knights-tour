@@ -9,7 +9,6 @@ export enum BoardSquareVariant {
 	DEAD_END = "deadEnd",
 	VISITED = "visited",
 	VALID_MOVE = "validMove",
-	HINT_VALID_MOVE = "hintValidMove",
 	COMPLETED = "completed",
 }
 
@@ -30,8 +29,6 @@ const squareVariants = {
 	[BoardSquareVariant.VISITED]:
 		"bg-zinc-300 dark:bg-zinc-700 text-gray-950 dark:text-gray-100 cursor-default active:brightness-100",
 	[BoardSquareVariant.VALID_MOVE]:
-		"bg-amber-100 dark:bg-amber-950 hover:bg-amber-300 dark:hover:bg-amber-900 active:bg-amber-200 dark:active:bg-amber-800 text-black dark:text-amber-100 transition-colors duration-300 ease-out",
-	[BoardSquareVariant.HINT_VALID_MOVE]:
 		"bg-amber-100 dark:bg-amber-950 hover:bg-amber-300 dark:hover:bg-amber-900 active:bg-amber-200 dark:active:bg-amber-800 text-black dark:text-amber-100 transition-colors duration-300 ease-out",
 	[BoardSquareVariant.COMPLETED]:
 		"bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 active:bg-green-300 dark:active:bg-green-800 text-gray-900 dark:text-green-50",

@@ -135,7 +135,13 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 					: `Row ${row + 1}, column ${column + 1}. Not a valid move.`
 			}
 		>
-			{isVisited ? moveNumber : ""}
+			{isVisited ? (
+				<span className="animate-[visited-fade-in_160ms_ease-out_forwards]">
+					{moveNumber}
+				</span>
+			) : (
+				""
+			)}
 		</BoardSquareButton>
 	);
 };
