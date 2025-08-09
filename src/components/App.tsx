@@ -43,15 +43,10 @@ const App = () => {
 		try {
 			const hasVisited = localStorage.getItem("knights-tour-visited");
 			if (!hasVisited) {
-				// First visit - show instructions after a brief delay
-				const timer = setTimeout(() => {
-					setInstructionsOpen(true);
-				}, 500);
-
+				// First visit - open instructions deterministically (no arbitrary delay)
+				setInstructionsOpen(true);
 				// Mark as visited
 				localStorage.setItem("knights-tour-visited", "true");
-
-				return () => clearTimeout(timer);
 			}
 		} catch (error) {
 			// Handle cases where localStorage is not available (e.g., private browsing)

@@ -34,6 +34,7 @@ export type UseBoardReturn = {
 
 	// Hint system
 	isHintActive: boolean;
+	isHintComputing: boolean;
 	hintsRemaining: number;
 	maxHints: number;
 	hintsUsed: number;
@@ -69,6 +70,7 @@ const useBoard = ({
 	const [hintsRemaining, setHintsRemaining] = useState<number>(maxHints);
 	const [isHintActive, setIsHintActive] = useState<boolean>(false);
 	const [hintPositions, setHintPositions] = useState<[number, number][]>([]);
+	const [isHintComputing, setIsHintComputing] = useState<boolean>(false);
 
 	// Calculate hints used
 	const hintsUsed = maxHints - hintsRemaining;
@@ -126,6 +128,7 @@ const useBoard = ({
 			}
 
 			setIsHintActive(false);
+			setHintPositions([]);
 		}
 	};
 
@@ -140,6 +143,7 @@ const useBoard = ({
 
 		setMoveHistory((prev) => prev.slice(0, prev.length - 1));
 		setIsHintActive(false);
+		setHintPositions([]);
 	};
 
 	const handleResetBoard = useCallback(() => {
@@ -151,22 +155,35 @@ const useBoard = ({
 	}, [rows, columns, maxHints]);
 
 	const handleUseHint = () => {
-		if (!isHintActive && hintsRemaining > 0 && lastPosition[0] !== -1) {
+		if (
+			isHintComputing ||
+			isHintActive ||
+			hintsRemaining <= 0 ||
+			lastPosition[0] === -1
+		) {
+			return;
+		}
+
+		setIsHintComputing(true);
+		try {
 			// Calculate all valid moves that don't lead to dead ends
 			const goodMoves = getNextMoveHint(lastPosition, currentMoveNumber, board);
 
 			// Set the hint positions
 			setHintPositions(goodMoves);
-
-			// Small delay to ensure smooth transition
-			setTimeout(() => {
-				setIsHintActive(true);
-				// Note: hint count is now decremented when hint is used, not when activated
-			}, 50);
+		} finally {
+			setIsHintComputing(false);
 		}
 	};
 
 	// --- Effects ---
+
+	// Activate hint after hint positions are committed
+	useEffect(() => {
+		if (!isHintActive && hintPositions.length > 0) {
+			setIsHintActive(true);
+		}
+	}, [hintPositions, isHintActive]);
 
 	// Reset board if dimensions change
 	useEffect(() => {
@@ -198,6 +215,7 @@ const useBoard = ({
 
 		// Hint system
 		isHintActive,
+		isHintComputing,
 		hintsRemaining,
 		maxHints,
 		hintsUsed,

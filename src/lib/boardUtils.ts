@@ -60,27 +60,33 @@ export const isUnvisited = (
 ): boolean => board[row][column] === NOT_VISITED;
 
 // Maximum computation time for hint calculation (in milliseconds)
-const MAX_COMPUTATION_TIME = 1000;
+const MAX_COMPUTATION_TIME = 750;
+
+// Limit how many candidate root moves we deeply explore (Warnsdorf-ranked)
+const MAX_HINT_CANDIDATES = 4;
+
+const cloneBoard = (board: number[][]): number[][] =>
+	board.map((row) => row.slice());
 
 export const getNextMoveHint = (
 	[currentRow, currentColumn]: [number, number],
 	currentMoveNumber: number,
 	board: number[][]
 ): [number, number][] => {
-	const rows = board.length;
-	const columns = board[0].length;
-	const totalSquares = rows * columns;
+	const rowsCount = board.length;
+	const columnsCount = board[0].length;
+	const totalSquares = rowsCount * columnsCount;
 
 	// If on the first move, just pick any valid move
 	if (currentMoveNumber === 0) {
 		return getValidMoves([currentRow, currentColumn], board);
 	}
 
-	// Get all valid moves from current position
-	const validMoves = getValidMoves([currentRow, currentColumn], board);
+	// Get all valid moves from current position (ranked by heuristic)
+	const rankedAll = getValidMovesWarnsdorf([currentRow, currentColumn], board);
 
 	// No valid moves means we're in a dead end
-	if (validMoves.length === 0) {
+	if (rankedAll.length === 0) {
 		return [];
 	}
 
@@ -90,8 +96,14 @@ export const getNextMoveHint = (
 	// Record start time to limit computation
 	const startTime = Date.now();
 
-	// Test each valid move to see if it leads to a full solution
-	for (const [nextRow, nextColumn] of validMoves) {
+	// Explore only the top-ranked candidates to reduce branching
+	const rankedCandidates = rankedAll.slice(
+		0,
+		Math.min(MAX_HINT_CANDIDATES, rankedAll.length)
+	);
+
+	// Test each top-ranked valid move to see if it leads to a full solution
+	for (const [nextRow, nextColumn] of rankedCandidates) {
 		// Check if we've exceeded our computation time limit
 		if (Date.now() - startTime > MAX_COMPUTATION_TIME) {
 			// If we're taking too long, use Warnsdorf's rule to suggest moves
@@ -101,13 +113,16 @@ export const getNextMoveHint = (
 			);
 			if (warnsdorfMoves.length > 0) {
 				// Just take the first few moves from Warnsdorf's heuristic
-				return warnsdorfMoves.slice(0, Math.min(3, warnsdorfMoves.length));
+				return warnsdorfMoves.slice(
+					0,
+					Math.min(MAX_HINT_CANDIDATES, warnsdorfMoves.length)
+				);
 			}
 			break;
 		}
 
 		// Create a deep copy of the board for this move's simulation
-		const boardCopy = JSON.parse(JSON.stringify(board));
+		const boardCopy = cloneBoard(board);
 
 		// Mark the move as visited
 		boardCopy[nextRow][nextColumn] = currentMoveNumber + 1;
@@ -158,10 +173,22 @@ export const getNextMoveHint = (
 		if (leadsToSolution) {
 			goodMoves.push([nextRow, nextColumn]);
 		}
+
+		// If we have enough good candidates, stop early
+		if (goodMoves.length >= MAX_HINT_CANDIDATES) {
+			return goodMoves.slice(0, MAX_HINT_CANDIDATES);
+		}
 	}
 
 	// If we found good moves, return them
 	// Otherwise, return an empty list to indicate no good moves are available
 	// This prevents suggesting moves that would definitely lead to dead ends
-	return goodMoves.length > 0 ? goodMoves : [];
+	if (goodMoves.length > 0) {
+		return goodMoves;
+	}
+
+	// If none of the explored candidates lead to a full solution, fall back to
+	// top-ranked heuristic suggestions to keep the UI responsive and useful
+	const fallback = getValidMovesWarnsdorf([currentRow, currentColumn], board);
+	return fallback.slice(0, Math.min(MAX_HINT_CANDIDATES, fallback.length));
 };

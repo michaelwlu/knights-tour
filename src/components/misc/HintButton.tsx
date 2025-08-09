@@ -9,9 +9,9 @@ const HintButton = () => {
 	const {
 		handleUseHint,
 		hintsRemaining,
-
 		isStarted,
 		isHintActive,
+		isHintComputing,
 		maxHints,
 	} = useBoardContext();
 	const [prevHintsRemaining, setPrevHintsRemaining] = useState(hintsRemaining);
@@ -33,9 +33,11 @@ const HintButton = () => {
 
 	return (
 		<Button
-			onClick={isHintActive ? undefined : handleUseHint}
+			onClick={isHintActive || isHintComputing ? undefined : handleUseHint}
 			variant="outline"
-			disabled={!isStarted || (!isHintActive && hintsRemaining === 0)}
+			disabled={
+				!isStarted || isHintComputing || (!isHintActive && hintsRemaining === 0)
+			}
 			aria-label={`Get hint for next move. ${hintsRemaining} of ${maxHints} hints remaining`}
 			className={
 				isHintActive

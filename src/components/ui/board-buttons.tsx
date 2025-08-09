@@ -60,34 +60,6 @@ const applyBorders = (row: number, column: number) =>
 		"border-b": true, // All cells get bottom border
 	});
 
-// Keyframe animation for the hint pulse effect with inner and outer edge glow
-const hintPulseStyles = `
-@keyframes hint-pulse {
-  0% { 
-    box-shadow: 
-      inset 0 0 8px 2px rgba(245, 158, 11, 0.3),
-      0 0 12px 4px rgba(245, 158, 11, 0.2);
-  }
-  50% { 
-    box-shadow: 
-      inset 0 0 12px 4px rgba(245, 158, 11, 0.5),
-      0 0 20px 8px rgba(245, 158, 11, 0.4);
-  }
-  100% { 
-    box-shadow: 
-      inset 0 0 8px 2px rgba(245, 158, 11, 0.3),
-      0 0 12px 4px rgba(245, 158, 11, 0.2);
-  }
-}
-`;
-
-// Add the animation to global styles
-if (typeof document !== "undefined") {
-	const styleEl = document.createElement("style");
-	styleEl.textContent = hintPulseStyles;
-	document.head.appendChild(styleEl);
-}
-
 interface BoardSquareButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	variant?: BoardSquareVariant;
