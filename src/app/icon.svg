@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-hidden="true">
+  <rect width="100" height="100" fill="none"/>
+  <text x="50%" y="78%" text-anchor="middle" font-size="82"
+        font-family="'Noto Emoji','Apple Color Emoji','Segoe UI Symbol','Arial Unicode MS',serif">
+    ♞
+  </text>
+  <!-- Fallback outline to improve contrast at tiny sizes -->
+  <rect width="100" height="100" fill="none" stroke="transparent"/>
+</svg>
+

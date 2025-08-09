@@ -166,7 +166,7 @@ const GameSettings = () => {
 					</div>
 
 					{/* Tab Content */}
-					<div className="min-h-[330px] pt-1 pb-2">
+					<div className="min-h-[325px] pt-1">
 						{activeTab === "board" && (
 							<RadioGroup
 								value={selectedDimensions}

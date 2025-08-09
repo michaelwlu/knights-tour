@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { GITHUB_URL, WIKIPEDIA_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { BookOpen, Github, HelpCircle } from "lucide-react";
+import { BookOpen, Code2, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -79,7 +79,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 						</li>
 					</ul>
 
-					<div className="flex justify-between space-x-2 w-full">
+					<div className="flex gap-3 justify-between w-full">
 						<Button asChild size="sm" variant="outline" className="flex-1/2">
 							<Link
 								href={WIKIPEDIA_URL}
@@ -98,7 +98,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 								rel="noopener noreferrer"
 								className="flex gap-1 items-center"
 							>
-								<Github className="h-3.5 w-3.5" />
+								<Code2 className="h-3.5 w-3.5" />
 								View Source
 							</Link>
 						</Button>

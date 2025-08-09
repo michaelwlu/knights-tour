@@ -99,7 +99,7 @@ const App = () => {
 					<GameSettings />
 				</div>
 				<Board />
-				<div className="flex items-center justify-center min-h-[3rem] mt-1">
+				<div className="flex items-start justify-center min-h-[3rem]">
 					<AnimatePresence mode="wait">
 						{!isStarted ? (
 							<motion.div
