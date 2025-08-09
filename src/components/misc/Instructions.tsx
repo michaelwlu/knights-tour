@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { GITHUB_URL, WIKIPEDIA_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { ExternalLink, HelpCircle } from "lucide-react";
+import { BookOpen, Github, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -13,7 +13,12 @@ import {
 	DialogTrigger,
 } from "../ui/dialog";
 
-const Instructions = () => {
+interface InstructionsProps {
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
+}
+
+const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 	// Default to "Click" and update based on media query
 	const [actionWord, setActionWord] = useState("Click");
 	// Match mobile devices (screen width less than 768px)
@@ -25,10 +30,10 @@ const Instructions = () => {
 	}, [isMobile]);
 
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild>
-				<Button variant="ghost">
-					<HelpCircle className="h-[1.2rem] w-[1.2rem]" />
+				<Button variant="ghost" size="sm" className="w-10 h-10">
+					<HelpCircle className="size-5" />
 					<span className="sr-only">How to Play</span>
 				</Button>
 			</DialogTrigger>
@@ -37,57 +42,53 @@ const Instructions = () => {
 					<DialogTitle className="text-2xl">How to Play</DialogTitle>
 				</DialogHeader>
 				<div className="mt-1 space-y-6">
-					<ul className="space-y-3 text-base text-foreground/80">
-						<li className={cn("flex items-start gap-2")}>
-							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-5 h-5 mt-0.5 flex-shrink-0" />
+					<ul className="space-y-4 text-base text-foreground/80">
+						<li className={cn("flex gap-3 items-start")}>
+							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-6 h-6 mt-0.5 flex-shrink-0" />
 							<span>
-								{actionWord} any square to start. The knight will move there.
+								<strong>{actionWord} any square to start</strong> - the knight
+								will move there and begin your tour.
 							</span>
 						</li>
-						<li className={cn("flex items-start gap-2")}>
-							<div className="rounded-full bg-zinc-300 dark:bg-zinc-700 w-5 h-5 mt-0.5 flex-shrink-0" />
-							<span>Each square can only be visited once.</span>
+						<li className={cn("flex gap-3 items-start")}>
+							<div className="rounded-full bg-blue-200 dark:bg-blue-800 w-6 h-6 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs font-bold">
+								L
+							</div>
+							<span>
+								<strong>Knights move in L-shapes</strong> - 2 squares in one
+								direction, then 1 square perpendicular.
+							</span>
 						</li>
-						<li className={cn("flex items-start gap-2")}>
-							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-5 h-5 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs font-bold">
+						<li className={cn("flex gap-3 items-start")}>
+							<div className="rounded-full bg-green-200 dark:bg-green-800 w-6 h-6 mt-0.5 flex-shrink-0 flex items-center justify-center">
+								<span className="text-xs font-bold">🏆</span>
+							</div>
+							<span>
+								<strong>Goal: visit every square exactly once</strong> - each
+								square can only be visited once during your tour.
+							</span>
+						</li>
+						<li className={cn("flex gap-3 items-start")}>
+							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-6 h-6 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs font-bold">
 								3
 							</div>
-							<span>Numbers in squares show the order of your moves.</span>
-						</li>
-						<li className={cn("flex items-start gap-2")}>
-							<div className="rounded-full bg-red-200 dark:bg-red-900 w-5 h-5 mt-0.5 flex-shrink-0" />
-							<span>Red indicates a dead end with no valid moves left.</span>
-						</li>
-						<li className={cn("flex items-start gap-2")}>
-							<span className="font-medium">⚙️</span>
 							<span>
-								Set board dimensions and difficulty using the controls at the
-								top.
+								<strong>Numbers show move order</strong> - red squares indicate
+								dead ends with no valid moves.
 							</span>
-						</li>
-						<li className={cn("flex items-start gap-2")}>
-							<span className="font-medium">↩️</span>
-							<span>
-								{actionWord} the last square or the Undo button to undo your
-								move (if allowed).
-							</span>
-						</li>
-						<li className={cn("flex items-start gap-2")}>
-							<span className="font-medium">🏆</span>
-							<span>You win by visiting every square exactly once!</span>
 						</li>
 					</ul>
 
-					<div className="flex justify-between w-full space-x-2">
+					<div className="flex justify-between space-x-2 w-full">
 						<Button asChild size="sm" variant="outline" className="flex-1/2">
 							<Link
 								href={WIKIPEDIA_URL}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="flex items-center gap-1"
+								className="flex gap-1 items-center"
 							>
+								<BookOpen className="h-3.5 w-3.5" />
 								Wikipedia
-								<ExternalLink className="h-3.5 w-3.5" />
 							</Link>
 						</Button>
 						<Button asChild size="sm" variant="outline" className="flex-1/2">
@@ -95,10 +96,10 @@ const Instructions = () => {
 								href={GITHUB_URL}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="flex items-center gap-1"
+								className="flex gap-1 items-center"
 							>
-								GitHub
-								<ExternalLink className="h-3.5 w-3.5" />
+								<Github className="h-3.5 w-3.5" />
+								View Source
 							</Link>
 						</Button>
 					</div>

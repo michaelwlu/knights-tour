@@ -25,7 +25,10 @@ const Board = () => {
 	const innerClass = columns < rows ? "h-full" : "w-full";
 
 	return (
-		<div className="w-full max-w-[95vw] mx-auto flex items-center justify-center aspect-square">
+		<section 
+			className="w-full max-w-[95vw] md:max-w-[70vh] xl:max-w-[80vh] mx-auto flex items-center justify-center aspect-square"
+			aria-label={`Knight's Tour game board, ${rows} by ${columns} squares`}
+		>
 			<div
 				ref={boardRef}
 				className={`grid ${innerClass}`}
@@ -34,6 +37,8 @@ const Board = () => {
 					gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
 					aspectRatio: `${columns}/${rows}`,
 				}}
+				role="grid"
+				aria-label={`${rows}x${columns} chess board grid`}
 			>
 				{Array.from({ length: rows }).map((_, row) =>
 					Array.from({ length: columns }).map((_, col) => (
@@ -41,7 +46,7 @@ const Board = () => {
 					))
 				)}
 			</div>
-		</div>
+		</section>
 	);
 };
 

@@ -21,6 +21,7 @@ const ConfigBoardDimensions = () => {
 		setBoardDimensions,
 		isCustomBoard,
 		setCustomBoardDimensions,
+		isStarted,
 	} = useBoardContext();
 
 	const [selected, setSelected] = useState(
@@ -72,9 +73,16 @@ const ConfigBoardDimensions = () => {
 						<CustomDimensionsInput form={form} onSelect={selectCustom} />
 					</RadioGroup>
 					<div className="space-y-5">
-						<p className="text-sm text-muted-foreground">
-							Changing board dimensions will reset your current progress
-						</p>
+						{isStarted && (
+							<div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-md dark:bg-amber-950/20 dark:border-amber-800/50">
+								<div className="text-amber-600 dark:text-amber-400 mt-0.5">
+									⚠️
+								</div>
+								<p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
+									Changing board dimensions will reset your current progress
+								</p>
+							</div>
+						)}
 						<Button
 							className="w-full"
 							variant="default"

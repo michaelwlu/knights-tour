@@ -16,8 +16,8 @@ The Knight's Tour is a mathematical problem where a knight on a chess board must
 
 ### 🎛️ Customization
 
-- **Board Dimensions**: Choose from preset sizes (5×5 to 10×10) or create custom dimensions (up to 12x12)
-- **Responsive Design**: Adapts to different screen sizes with optimal layout
+- **Board Dimensions**: Choose from preset sizes (5×5 to 12×12) or create custom dimensions
+- **Responsive Design**: Desktop sidebar layout with mobile-optimized vertical stack
 - **Dark/Light Theme**: Toggle between themes for comfortable play
 
 ### 💡 Smart Hint System
@@ -119,28 +119,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📋 Changelog
 
+### [1.3.0] - 2025-08-08
+
+#### Added
+
+- **Auto-Opening Instructions Modal**: First-time visitors automatically see the "How to Play" modal
+
+#### Changed
+
+- **Improved Desktop Styling**: Enhanced desktop layout with better component spacing and visual hierarchy
+- **Simplified Instructions**: Streamlined "How to Play" content for better clarity
+- **Enhanced Button Layouts**: Optimized layouts for both mobile and desktop experiences with contextual button sets
+
+#### Fixed
+
+- **Animation Conflicts**: Eliminated visual glitches during game state transitions
+- **Accessibility Improvements**: Enhanced ARIA labels and semantic markup throughout the application
+
 ### [1.2.0] - 2025-07-27
 
 #### Added
 
+- **Complete Animation System**: Integrated Framer Motion for smooth UI transitions and feedback
 - **Smart Hint System**: Intelligent algorithm that finds moves leading to completion
-- **Visual Hint Styling**:
-  - Hint squares pulse with amber glow effect
-  - Other valid moves show with reduced opacity when hints are active
-  - New `HINT_VALID_MOVE` variant for subtle styling
-- **Hint Usage Tracking**: Completion messages now include number of hints used
-- **Enhanced UX**: Clear visual hierarchy between hint squares and other valid moves
+- **Enhanced Board Animations**: Smooth square transitions, hover effects, and visual state changes
+- **Visual Hint Styling**: Hint squares pulse with amber glow effect
 
 #### Changed
 
-- **Hint Behavior**: When hints are active, valid moves that aren't hints show with subtle styling
-- **Completion Messages**: Share text now includes hint usage (e.g., "using 2 hints")
-
-#### Technical
-
-- Added `hintsUsed` calculation to board context
-- Implemented new `BoardSquareVariant.HINT_VALID_MOVE` styling
-- Enhanced hint system with visual feedback
+- **Comprehensive README**: Detailed documentation with feature descriptions, setup instructions, and changelog
+- **Completion Messages**: Share text now includes hint usage statistics
 
 ### [1.1.0] - 2025-05-25
 

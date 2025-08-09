@@ -5,4 +5,6 @@ export const BOARD_DIMENSION_OPTIONS = [
 	{ label: "eight", rows: 8, columns: 8 },
 	{ label: "nine", rows: 9, columns: 9 },
 	{ label: "ten", rows: 10, columns: 10 },
+	{ label: "eleven", rows: 11, columns: 11 },
+	{ label: "twelve", rows: 12, columns: 12 },
 ];

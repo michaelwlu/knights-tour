@@ -109,6 +109,9 @@ const useBoard = ({
 	// --- Actions ---
 	const handleMoveNext = ([row, column]: [number, number]): void => {
 		if (isAvailable([row, column], board)) {
+			// Check if this move is using a hint
+			const isUsingHint = isHintActive && getIsHintSquare([row, column]);
+
 			setBoard((prev) => {
 				const newBoard = prev.map((row) => [...row]);
 				newBoard[row][column] = moveHistory.length;
@@ -116,6 +119,12 @@ const useBoard = ({
 			});
 
 			setMoveHistory((prev) => [...prev, [row, column]]);
+
+			// If using a hint, decrement the hint count
+			if (isUsingHint) {
+				setHintsRemaining((prev) => prev - 1);
+			}
+
 			setIsHintActive(false);
 		}
 	};
@@ -152,7 +161,7 @@ const useBoard = ({
 			// Small delay to ensure smooth transition
 			setTimeout(() => {
 				setIsHintActive(true);
-				setHintsRemaining((prev) => prev - 1);
+				// Note: hint count is now decremented when hint is used, not when activated
 			}, 50);
 		}
 	};

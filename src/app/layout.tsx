@@ -33,7 +33,7 @@ export default function RootLayout({
 				/>
 			</head>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				<ThemeProvider
 					attribute="class"
@@ -41,7 +41,9 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="h-[100svh] overflow-hidden px-4 py-2">{children}</div>
+					<div className="h-[100svh] overflow-hidden px-4 py-2 md:px-6 md:py-4">
+						{children}
+					</div>
 				</ThemeProvider>
 			</body>
 		</html>

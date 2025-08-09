@@ -22,19 +22,19 @@ export enum TextSizeVariant {
 // Style variants for different square states - using enum values as keys
 const squareVariants = {
 	[BoardSquareVariant.UNVISITED]:
-		"bg-white dark:bg-zinc-950 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-black dark:text-white",
+		"bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900/50 active:bg-amber-100 dark:active:bg-amber-900/40 text-black dark:text-white",
 	[BoardSquareVariant.LAST_MOVE]:
-		"bg-amber-200 dark:bg-amber-800 hover:bg-amber-400 dark:hover:bg-amber-700 text-black dark:text-amber-100",
+		"bg-amber-200 dark:bg-amber-800 hover:bg-amber-400 dark:hover:bg-amber-700 active:bg-amber-300 dark:active:bg-amber-700 text-black dark:text-amber-100",
 	[BoardSquareVariant.DEAD_END]:
-		"bg-red-200 dark:bg-red-900 hover:bg-red-300 dark:hover:bg-red-800 text-red-950 dark:text-red-100",
+		"bg-red-200 dark:bg-red-900 hover:bg-red-300 dark:hover:bg-red-800 active:bg-red-300 dark:active:bg-red-800 text-red-950 dark:text-red-100",
 	[BoardSquareVariant.VISITED]:
-		"bg-zinc-300 dark:bg-zinc-700 text-gray-950 dark:text-gray-100",
+		"bg-zinc-300 dark:bg-zinc-700 text-gray-950 dark:text-gray-100 cursor-default active:brightness-100",
 	[BoardSquareVariant.VALID_MOVE]:
-		"bg-amber-100 dark:bg-amber-950 hover:bg-amber-300 dark:hover:bg-amber-900 text-black dark:text-amber-100",
+		"bg-amber-100 dark:bg-amber-950 hover:bg-amber-300 dark:hover:bg-amber-900 active:bg-amber-200 dark:active:bg-amber-800 text-black dark:text-amber-100",
 	[BoardSquareVariant.HINT_VALID_MOVE]:
-		"bg-amber-50 dark:bg-amber-900/50 hover:bg-amber-200 dark:hover:bg-amber-800/70 text-black/60 dark:text-amber-100/60",
+		"bg-amber-50 dark:bg-amber-900/50 hover:bg-amber-200 dark:hover:bg-amber-800/70 active:bg-amber-200 dark:active:bg-amber-800/70 text-black/60 dark:text-amber-100/60",
 	[BoardSquareVariant.COMPLETED]:
-		"bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 text-gray-900 dark:text-green-50",
+		"bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 active:bg-green-300 dark:active:bg-green-800 text-gray-900 dark:text-green-50",
 };
 
 // Text size variants - using enum values as keys
@@ -46,7 +46,7 @@ const textSizes = {
 
 // Base styles for all squares
 const squareBase =
-	"aspect-square rounded-none p-0 inline-flex items-center justify-center font-bold transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50";
+	"aspect-square rounded-none p-0 inline-flex items-center justify-center font-bold transition-colors duration-150 active:duration-75 disabled:pointer-events-none disabled:opacity-50 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:brightness-95 dark:active:brightness-110";
 
 // Checkerboard pattern for unvisited squares
 export const checkerboardOddSquare = "bg-zinc-200 dark:bg-zinc-800";
@@ -60,12 +60,24 @@ const applyBorders = (row: number, column: number) =>
 		"border-b": true, // All cells get bottom border
 	});
 
-// Keyframe animation for the hint pulse effect with internal glow
+// Keyframe animation for the hint pulse effect with inner and outer edge glow
 const hintPulseStyles = `
 @keyframes hint-pulse {
-  0% { box-shadow: inset 0 0 0 0 rgba(245, 158, 11, 0.4); }
-  70% { box-shadow: inset 0 0 8px 3px rgba(245, 158, 11, 0.4); }
-  100% { box-shadow: inset 0 0 0 0 rgba(245, 158, 11, 0); }
+  0% { 
+    box-shadow: 
+      inset 0 0 8px 2px rgba(245, 158, 11, 0.3),
+      0 0 12px 4px rgba(245, 158, 11, 0.2);
+  }
+  50% { 
+    box-shadow: 
+      inset 0 0 12px 4px rgba(245, 158, 11, 0.5),
+      0 0 20px 8px rgba(245, 158, 11, 0.4);
+  }
+  100% { 
+    box-shadow: 
+      inset 0 0 8px 2px rgba(245, 158, 11, 0.3),
+      0 0 12px 4px rgba(245, 158, 11, 0.2);
+  }
 }
 `;
 
@@ -84,6 +96,8 @@ interface BoardSquareButtonProps
 	row?: number;
 	column?: number;
 	isHintSquare?: boolean;
+	highlightValidMoves?: boolean;
+	isValidMove?: boolean;
 }
 
 export const BoardSquareButton = React.forwardRef<
@@ -99,6 +113,8 @@ export const BoardSquareButton = React.forwardRef<
 			row,
 			column,
 			isHintSquare = false,
+			highlightValidMoves = false,
+			isValidMove = false,
 			style,
 			...props
 		},
@@ -107,8 +123,16 @@ export const BoardSquareButton = React.forwardRef<
 		// Optimize class name generation with useMemo to avoid recalculations
 		const combinedClassNames = useMemo(() => {
 			// Default to using the provided variant or fall back to UNVISITED
-			const variantStyle =
+			let variantStyle =
 				squareVariants[variant] ?? squareVariants[BoardSquareVariant.UNVISITED];
+
+			// For unvisited squares, apply amber hover/active only on valid moves in Easy mode
+			if (variant === BoardSquareVariant.UNVISITED) {
+				const shouldUseAmberHover = highlightValidMoves && isValidMove;
+				variantStyle = shouldUseAmberHover
+					? "bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900/50 active:bg-amber-100 dark:active:bg-amber-900/50 text-black dark:text-white"
+					: "bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900/40 active:bg-amber-100 dark:active:bg-amber-900/40 text-black dark:text-white";
+			}
 
 			// Apply checkerboard pattern only to unvisited squares
 			const checkerboardClass =
@@ -134,14 +158,25 @@ export const BoardSquareButton = React.forwardRef<
 				borderClasses,
 				className
 			);
-		}, [variant, isEvenSquare, textSize, row, column, className]);
+		}, [
+			variant,
+			isEvenSquare,
+			textSize,
+			row,
+			column,
+			className,
+			highlightValidMoves,
+			isValidMove,
+		]);
 
 		// Add pulsing glow effect for hint squares with VALID_MOVE variant
 		const hintGlowStyles =
 			variant === BoardSquareVariant.VALID_MOVE && isHintSquare
 				? {
 						animation: "hint-pulse 1.5s infinite ease-in-out",
-						boxShadow: "inset 0 0 0 0 rgba(245, 158, 11, 0.4)",
+						boxShadow:
+							"inset 0 0 8px 2px rgba(245, 158, 11, 0.3), 0 0 12px 4px rgba(245, 158, 11, 0.2)",
+						zIndex: 10,
 				  }
 				: {};
 

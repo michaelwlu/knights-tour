@@ -82,15 +82,42 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 		}
 	};
 
+	// Handle keyboard interaction
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		if (e.key === "Enter" || e.key === " ") {
+			e.preventDefault();
+			handleClick();
+		}
+	};
+
+	// Determine if square should be focusable
+	const isInteractive = (isLastMove && allowUndo) || (!isVisited && validMove);
+
 	return (
 		<BoardSquareButton
 			variant={variant}
 			isEvenSquare={isEvenSquare}
 			onClick={handleClick}
+			onKeyDown={handleKeyDown}
 			textSize={textSize}
 			row={row}
 			column={column}
 			isHintSquare={isHintActive && isHintSquare}
+			highlightValidMoves={highlightValidMoves}
+			isValidMove={validMove}
+			tabIndex={isInteractive ? 0 : -1}
+			role="gridcell"
+			aria-label={
+				isLastMove
+					? `Current position: ${moveNumber}. Press Enter to undo.`
+					: !isVisited && validMove
+					? `Valid move to row ${row + 1}, column ${
+							column + 1
+					  }. Press Enter to move.`
+					: isVisited
+					? `Move ${moveNumber}: row ${row + 1}, column ${column + 1}.`
+					: `Row ${row + 1}, column ${column + 1}. Not available.`
+			}
 		>
 			{isVisited ? moveNumber : ""}
 		</BoardSquareButton>

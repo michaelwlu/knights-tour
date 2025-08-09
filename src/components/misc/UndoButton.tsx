@@ -3,17 +3,16 @@ import { Undo2 } from "lucide-react";
 import { useBoardContext } from "../../context/BoardContext";
 
 const UndoButton = () => {
-	const { handleUndoLastMove, isStarted, isCompleted, allowUndo } =
-		useBoardContext();
+	const { handleUndoLastMove, isStarted, allowUndo } = useBoardContext();
 	return (
-		!isCompleted &&
 		allowUndo && (
 			<Button
 				onClick={handleUndoLastMove}
 				variant={!allowUndo ? "ghost" : "outline"}
 				disabled={!isStarted || !allowUndo}
+				aria-label="Undo last move"
 			>
-				<Undo2 /> Undo
+				<Undo2 aria-hidden="true" /> Undo
 			</Button>
 		)
 	);
