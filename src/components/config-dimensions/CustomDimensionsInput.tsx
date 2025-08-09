@@ -34,15 +34,15 @@ const CustomDimensionsInput = ({
 	};
 
 	return (
-		<div className="flex items-center w-full -my-1 space-x-3">
+		<div className="flex items-center -my-1 space-x-3 w-full">
 			<RadioGroupItem value="custom" id="custom" onClick={handleSelectCustom} />
 			<Label
 				htmlFor="custom"
-				className="flex items-baseline justify-between w-full"
+				className="flex justify-between items-baseline w-full"
 				onClick={handleSelectCustom}
 			>
 				<div className="flex flex-col">
-					<span>Custom Size</span>
+					<span>Custom size</span>
 				</div>
 				<Form {...form}>
 					<div
@@ -53,7 +53,7 @@ const CustomDimensionsInput = ({
 							control={form.control}
 							name="rows"
 							render={({ field }) => (
-								<FormItem className="relative w-16 space-y-0">
+								<FormItem className="relative space-y-0 w-16">
 									<FormControl>
 										<Input
 											{...field}
@@ -96,7 +96,7 @@ const CustomDimensionsInput = ({
 							control={form.control}
 							name="columns"
 							render={({ field }) => (
-								<FormItem className="relative w-16 space-y-0">
+								<FormItem className="relative space-y-0 w-16">
 									<FormControl>
 										<Input
 											{...field}

@@ -1,8 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Knight's Tour ♞
 
-## Getting Started
+A modern, interactive web application for solving the classic Knight's Tour chess puzzle. Built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## 🎯 About
+
+The Knight's Tour is a mathematical problem where a knight on a chess board must visit every square exactly once. This application provides an elegant, user-friendly interface for exploring this fascinating puzzle with various board sizes and difficulty levels.
+
+## ✨ Features
+
+### 🎮 Game Modes
+
+- **Easy Mode**: Valid moves are highlighted, undo moves allowed
+- **Medium Mode**: Valid moves hidden, undo moves allowed
+- **Hard Mode**: Valid moves hidden, no undo functionality
+
+### 🎛️ Customization
+
+- **Board Dimensions**: Choose from preset sizes (5×5 to 12×12) or create custom dimensions
+- **Responsive Design**: Desktop sidebar layout with mobile-optimized vertical stack
+- **Dark/Light Theme**: Toggle between themes for comfortable play
+
+### 💡 Smart Hint System
+
+- **Intelligent Hints**: Algorithm finds moves that lead to completion
+- **Visual Guidance**: Hint squares pulse with a subtle glow effect
+- **Contextual Display**: When hints are active, other valid moves show with reduced opacity
+- **Usage Tracking**: Completion message includes number of hints used
+
+### 🎯 Game Features
+
+- **Real-time Timer**: Track your solving time
+- **Move History**: Visual representation of your path
+- **Dead End Detection**: Clear indication when no valid moves remain
+- **Undo Functionality**: Step back through your moves (when enabled)
+- **Share Results**: Share your completion time and stats
+
+### 🎨 User Experience
+
+- **Smooth Animations**: Framer Motion for polished interactions
+- **Accessible Design**: Keyboard navigation and screen reader support
+- **Mobile Optimized**: Touch-friendly interface for mobile devices
+- **Visual Feedback**: Clear color coding for different square states
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+# Clone from the original repository
+git clone https://github.com/michaelwlu/knights-tour.git
+# Or if you have forked it, replace 'michaelwlu' with your username
+cd knights-tour
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +78,110 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **UI Components**: Custom component library with shadcn/ui patterns
+- **State Management**: React Context + Custom Hooks
 
-## Learn More
+## 🎯 How to Play
 
-To learn more about Next.js, take a look at the following resources:
+1. **Start**: Click any square to place the knight and begin
+2. **Move**: Click highlighted squares to move the knight in L-shaped patterns
+3. **Goal**: Visit every square exactly once
+4. **Hints**: Use the hint button for guidance when stuck
+5. **Undo**: Click the last square or undo button to go back (if enabled)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📱 Browser Support
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
 
-## Deploy on Vercel
+## 🤝 Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📋 Changelog
+
+### [1.3.0] - 2025-08-08
+
+#### Added
+
+- **Auto-Opening Instructions Modal**: First-time visitors automatically see the "How to Play" modal
+
+#### Changed
+
+- **Improved Desktop Styling**: Enhanced desktop layout with better component spacing and visual hierarchy
+- **Simplified Instructions**: Streamlined "How to Play" content for better clarity
+- **Enhanced Button Layouts**: Optimized layouts for both mobile and desktop experiences with contextual button sets
+
+#### Fixed
+
+- **Animation Conflicts**: Eliminated visual glitches during game state transitions
+- **Accessibility Improvements**: Enhanced ARIA labels and semantic markup throughout the application
+
+### [1.2.0] - 2025-07-27
+
+#### Added
+
+- **Complete Animation System**: Integrated Framer Motion for smooth UI transitions and feedback
+- **Smart Hint System**: Intelligent algorithm that finds moves leading to completion
+- **Enhanced Board Animations**: Smooth square transitions, hover effects, and visual state changes
+- **Visual Hint Styling**: Hint squares pulse with amber glow effect
+
+#### Changed
+
+- **Comprehensive README**: Detailed documentation with feature descriptions, setup instructions, and changelog
+- **Completion Messages**: Share text now includes hint usage statistics
+
+### [1.1.0] - 2025-05-25
+
+#### Added
+
+- **Custom Board Dimensions**: Create boards from 5×5 to 12×12
+- **Difficulty Modes**: Easy, Medium, and Hard settings
+- **Undo Functionality**: Step back through moves (configurable per difficulty)
+- **Valid Move Highlighting**: Visual guidance for valid knight moves
+- **Game Timer**: Real-time tracking of solving time
+- **Share Feature**: Share completion results with friends
+- **Dark/Light Theme**: Toggle between themes
+- **Responsive Design**: Mobile-optimized interface
+
+#### Changed
+
+- **UI Overhaul**: Modern, clean interface with Tailwind CSS
+- **Component Architecture**: Modular component structure
+- **State Management**: React Context for global state
+
+### [1.0.0] - 2025-05-23
+
+#### Added
+
+- **Basic Knight's Tour Game**: Core gameplay mechanics
+- **Board Rendering**: Visual chess board with knight movement
+- **Move Validation**: L-shaped knight movement rules
+- **Completion Detection**: Win condition checking
+- **Basic Styling**: Initial visual design
+
+#### Technical
+
+- Next.js 14 project setup
+- TypeScript configuration
+- Basic component structure
+- Core game logic implementation

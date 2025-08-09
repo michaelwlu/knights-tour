@@ -5,7 +5,7 @@ import { Clipboard, ClipboardCheck, Send } from "lucide-react";
 import { useState } from "react";
 
 const ShareButton = () => {
-	const { isCompleted, boardDimensions, elapsedTime, formatTime, difficulty } =
+	const { boardDimensions, elapsedTime, formatTime, difficulty, hintsUsed } =
 		useBoardContext();
 	const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
@@ -14,7 +14,11 @@ const ShareButton = () => {
 		const { rows, columns } = boardDimensions;
 		const boardSize = `${rows}×${columns}`;
 		const timeFormatted = formatTime(elapsedTime);
-		return `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}!`;
+		const hintsText =
+			hintsUsed > 0
+				? ` using ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`
+				: "";
+		return `I completed the Knight's Tour on a ${boardSize} board (${difficulty} mode) in ${timeFormatted}${hintsText}!`;
 	};
 
 	const handleShare = () => {
@@ -63,30 +67,32 @@ const ShareButton = () => {
 		}
 	};
 
-	return isCompleted ? (
+	return (
 		<div className="inline-flex rounded-md shadow-sm">
 			<Button
 				onClick={handleShare}
 				variant="default"
 				className="rounded-r-none"
+				aria-label="Share your game score"
 			>
-				<Send className="w-4 h-4 mr-2" />
+				<Send className="mr-2 w-4 h-4" aria-hidden="true" />
 				{showCopiedMessage ? "Copied!" : "Share Score"}
 			</Button>
 			<Button
 				onClick={() => copyToClipboard(createShareText())}
 				variant="default"
-				className="border-l rounded-l-none border-primary-foreground/80"
-				title="Copy to clipboard"
+				className="rounded-l-none border-l border-primary-foreground/80"
+				aria-label="Copy score to clipboard"
 			>
 				{showCopiedMessage ? (
-					<ClipboardCheck className="w-4 h-4" />
+					<ClipboardCheck className="w-4 h-4" aria-hidden="true" />
 				) : (
-					<Clipboard className="w-4 h-4" />
+					<Clipboard className="w-4 h-4" aria-hidden="true" />
 				)}
+				<span className="sr-only">Copy to clipboard</span>
 			</Button>
 		</div>
-	) : null;
+	);
 };
 
 export default ShareButton;

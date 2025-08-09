@@ -9,11 +9,16 @@ const BoardDimensionsOption = ({
 	rows,
 	columns,
 }: SetDimensionButtonProps) => {
+	// Display dimensions without categorization
+	const getDisplayLabel = () => {
+		return `${rows} × ${columns}`;
+	};
+
 	return (
-		<div className="flex items-center w-full space-x-3">
+		<div className="flex items-center space-x-3 w-full">
 			<RadioGroupItem value={label} id={label} />
-			<Label htmlFor={label} className="w-full py-1">
-				{rows} x {columns}
+			<Label htmlFor={label} className="py-1 w-full">
+				{getDisplayLabel()}
 			</Label>
 		</div>
 	);

@@ -21,7 +21,7 @@ const MAX_DIMENSION = 12;
 
 const useBoardConfig = (): UseBoardConfigReturn => {
 	const [boardDimensions, setBoardDimensions] = useState<BoardDimensionOption>(
-		BOARD_DIMENSION_OPTIONS[0]
+		BOARD_DIMENSION_OPTIONS[1] // 6×6 (Friendlier default)
 	);
 	const [isCustomBoard, setIsCustomBoard] = useState(false);
 
