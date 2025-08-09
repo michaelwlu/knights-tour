@@ -31,7 +31,7 @@ const Board = () => {
 		>
 			<div
 				ref={boardRef}
-				className={`overflow-hidden rounded-lg ${innerClass}`}
+				className={`overflow-visible rounded-lg shadow-none md:shadow-[0_10px_28px_-12px_rgba(0,0,0,0.18)] ${innerClass}`}
 				style={{
 					aspectRatio: `${columns}/${rows}`,
 				}}

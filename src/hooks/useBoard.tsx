@@ -66,11 +66,27 @@ const useBoard = ({
 	const currentMoveNumber = moveHistory.length - 1;
 
 	// --- Hint System State ---
-	const maxHints = 3; // Starting with 3 hints
+	const maxHints = useMemo(() => {
+		switch (difficulty) {
+			case Difficulty.Easy:
+				return 5;
+			case Difficulty.Medium:
+				return 4;
+			case Difficulty.Hard:
+				return 3;
+			case Difficulty.Expert:
+				return 0;
+			default:
+				return 3;
+		}
+	}, [difficulty]);
 	const [hintsRemaining, setHintsRemaining] = useState<number>(maxHints);
 	const [isHintActive, setIsHintActive] = useState<boolean>(false);
 	const [hintPositions, setHintPositions] = useState<[number, number][]>([]);
 	const [isHintComputing, setIsHintComputing] = useState<boolean>(false);
+	// When true, we've confirmed (via a hint request) there is no solution from the current state
+	const [isNoSolutionConfirmed, setIsNoSolutionConfirmed] =
+		useState<boolean>(false);
 
 	// Calculate hints used
 	const hintsUsed = maxHints - hintsRemaining;
@@ -105,14 +121,13 @@ const useBoard = ({
 	const isDeadEnd: boolean =
 		isStarted &&
 		!isCompleted &&
-		(validMovesList.length === 0 ||
-			(isHintActive && hintPositions.length === 0));
+		(validMovesList.length === 0 || isNoSolutionConfirmed);
 
 	// --- Actions ---
 	const handleMoveNext = ([row, column]: [number, number]): void => {
 		if (isAvailable([row, column], board)) {
-			// Check if this move is using a hint
-			const isUsingHint = isHintActive && getIsHintSquare([row, column]);
+			// If a hint is active, any chosen next move should consume a hint
+			const isUsingHint = isHintActive;
 
 			setBoard((prev) => {
 				const newBoard = prev.map((row) => [...row]);
@@ -129,6 +144,7 @@ const useBoard = ({
 
 			setIsHintActive(false);
 			setHintPositions([]);
+			setIsNoSolutionConfirmed(false);
 		}
 	};
 
@@ -144,6 +160,7 @@ const useBoard = ({
 		setMoveHistory((prev) => prev.slice(0, prev.length - 1));
 		setIsHintActive(false);
 		setHintPositions([]);
+		setIsNoSolutionConfirmed(false);
 	};
 
 	const handleResetBoard = useCallback(() => {
@@ -152,6 +169,7 @@ const useBoard = ({
 		setIsHintActive(false);
 		setHintsRemaining(maxHints);
 		setHintPositions([]);
+		setIsNoSolutionConfirmed(false);
 	}, [rows, columns, maxHints]);
 
 	const handleUseHint = () => {
@@ -171,6 +189,12 @@ const useBoard = ({
 
 			// Set the hint positions
 			setHintPositions(goodMoves);
+			// If no hint moves are available, mark as a confirmed dead end
+			if (goodMoves.length === 0) {
+				setIsNoSolutionConfirmed(true);
+				setIsHintActive(false);
+				setHintsRemaining((prev) => (prev > 0 ? prev - 1 : 0));
+			}
 		} finally {
 			setIsHintComputing(false);
 		}

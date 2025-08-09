@@ -75,7 +75,7 @@ const ShareButton = () => {
 				className="rounded-r-none"
 				aria-label="Share your game score"
 			>
-				<Send className="mr-2 w-4 h-4" aria-hidden="true" />
+				<Send className="mr-1 w-4 h-4" aria-hidden="true" />
 				{showCopiedMessage ? "Copied!" : "Share Score"}
 			</Button>
 			<Button

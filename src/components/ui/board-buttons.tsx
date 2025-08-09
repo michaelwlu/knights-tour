@@ -9,7 +9,6 @@ export enum BoardSquareVariant {
 	DEAD_END = "deadEnd",
 	VISITED = "visited",
 	VALID_MOVE = "validMove",
-	HINT_VALID_MOVE = "hintValidMove",
 	COMPLETED = "completed",
 }
 
@@ -30,9 +29,7 @@ const squareVariants = {
 	[BoardSquareVariant.VISITED]:
 		"bg-zinc-300 dark:bg-zinc-700 text-gray-950 dark:text-gray-100 cursor-default active:brightness-100",
 	[BoardSquareVariant.VALID_MOVE]:
-		"bg-amber-100 dark:bg-amber-950 hover:bg-amber-300 dark:hover:bg-amber-900 active:bg-amber-200 dark:active:bg-amber-800 text-black dark:text-amber-100",
-	[BoardSquareVariant.HINT_VALID_MOVE]:
-		"bg-amber-50 dark:bg-amber-900/50 hover:bg-amber-200 dark:hover:bg-amber-800/70 active:bg-amber-200 dark:active:bg-amber-800/70 text-black/60 dark:text-amber-100/60",
+		"bg-amber-100 dark:bg-amber-950 hover:bg-amber-300 dark:hover:bg-amber-900 active:bg-amber-200 dark:active:bg-amber-800 text-black dark:text-amber-100 transition-colors duration-300 ease-out",
 	[BoardSquareVariant.COMPLETED]:
 		"bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 active:bg-green-300 dark:active:bg-green-800 text-gray-900 dark:text-green-50",
 };
@@ -46,7 +43,7 @@ const textSizes = {
 
 // Base styles for all squares
 const squareBase =
-	"aspect-square rounded-none p-0 inline-flex items-center justify-center font-bold transition-colors duration-150 active:duration-75 disabled:pointer-events-none disabled:opacity-50 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:brightness-95 dark:active:brightness-110";
+	"aspect-square rounded-none p-0 inline-flex items-center justify-center font-bold transition-colors duration-150 active:duration-75 disabled:pointer-events-none disabled:opacity-50 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 // Checkerboard pattern for unvisited squares
 export const checkerboardOddSquare = "bg-zinc-200 dark:bg-zinc-800";

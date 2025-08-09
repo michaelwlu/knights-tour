@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { YELLOW_COLOR } from "@/lib/constants";
 import { AnimatePresence, motion } from "framer-motion";
 import { Lightbulb } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -12,6 +11,7 @@ const HintButton = () => {
 		isStarted,
 		isHintActive,
 		isHintComputing,
+		isDeadEnd,
 		maxHints,
 	} = useBoardContext();
 	const [prevHintsRemaining, setPrevHintsRemaining] = useState(hintsRemaining);
@@ -36,7 +36,10 @@ const HintButton = () => {
 			onClick={isHintActive || isHintComputing ? undefined : handleUseHint}
 			variant="outline"
 			disabled={
-				!isStarted || isHintComputing || (!isHintActive && hintsRemaining === 0)
+				!isStarted ||
+				isHintComputing ||
+				isDeadEnd ||
+				(!isHintActive && hintsRemaining === 0)
 			}
 			aria-label={`Get hint for next move. ${hintsRemaining} of ${maxHints} hints remaining`}
 			className={
@@ -45,7 +48,7 @@ const HintButton = () => {
 					: ""
 			}
 		>
-			<Lightbulb color={YELLOW_COLOR} aria-hidden="true" />
+			<Lightbulb className="text-yellow-500" aria-hidden="true" />
 			<span>Hint</span>
 
 			{/* Animate counter container */}

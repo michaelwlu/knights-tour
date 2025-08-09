@@ -1,5 +1,6 @@
 import { ModeToggle } from "@/components/misc/ModeToggle";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { Difficulty } from "@/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useBoardContext } from "../context/BoardContext";
@@ -13,7 +14,14 @@ import ShareButton from "./misc/ShareButton";
 import UndoButton from "./misc/UndoButton";
 
 const App = () => {
-	const { isCompleted, isDeadEnd, moveHistory, isStarted } = useBoardContext();
+	const {
+		isCompleted,
+		isDeadEnd,
+		moveHistory,
+		isStarted,
+		difficulty,
+		isTransitioning,
+	} = useBoardContext();
 
 	// Mobile detection for action word (Tap vs Click)
 	const [actionWord, setActionWord] = useState("Click");
@@ -22,6 +30,9 @@ const App = () => {
 
 	// First visit detection and instructions modal state
 	const [instructionsOpen, setInstructionsOpen] = useState(false);
+
+	// Track display difficulty to prevent layout changes during transitions
+	const [displayDifficulty, setDisplayDifficulty] = useState(difficulty);
 
 	// Ensure we're on the client before showing dynamic content
 	useEffect(() => {
@@ -34,6 +45,13 @@ const App = () => {
 			setActionWord(isMobile ? "Tap" : "Click");
 		}
 	}, [isMobile, isClient]);
+
+	// Update display difficulty only when not transitioning and game not started
+	useEffect(() => {
+		if (!isStarted && !isTransitioning) {
+			setDisplayDifficulty(difficulty);
+		}
+	}, [difficulty, isStarted, isTransitioning]);
 
 	// Check if this is the user's first visit (client-side only)
 	useEffect(() => {
@@ -122,7 +140,7 @@ const App = () => {
 						) : (
 							<div className="w-full">
 								<AnimatePresence mode="wait">
-									{isCompleted || isDeadEnd ? (
+									{isCompleted ? (
 										<motion.div
 											key="mobile-game-end-actions"
 											initial={{ opacity: 0, y: -10 }}
@@ -131,8 +149,9 @@ const App = () => {
 											transition={{ duration: 0.2, ease: "easeInOut" }}
 											className="flex gap-3 justify-center items-center w-full"
 										>
-											<ShareButton />
+											<UndoButton iconOnly={true} />
 											<ResetButton />
+											<ShareButton />
 										</motion.div>
 									) : (
 										<motion.div
@@ -144,8 +163,10 @@ const App = () => {
 											className="flex gap-3 justify-around items-center w-full"
 										>
 											<UndoButton />
-											<HintButton />
 											<ResetButton />
+											{displayDifficulty !== Difficulty.Expert && (
+												<HintButton />
+											)}
 										</motion.div>
 									)}
 								</AnimatePresence>
@@ -194,9 +215,9 @@ const App = () => {
 								{!isStarted ? (
 									<motion.div
 										key="desktop-how-to-play"
-										initial={{ opacity: 0, y: 10 }}
+										initial={{ opacity: 0, y: -10 }}
 										animate={{ opacity: 1, y: 0 }}
-										exit={{ opacity: 0, y: -10 }}
+										exit={{ opacity: 0, y: 10 }}
 										transition={{ duration: 0.2, ease: "easeInOut" }}
 										className="space-y-3"
 									>
@@ -215,43 +236,82 @@ const App = () => {
 								) : (
 									<motion.div
 										key="desktop-actions"
-										initial={{ opacity: 0, y: 10 }}
+										initial={{ opacity: 0, y: -10 }}
 										animate={{ opacity: 1, y: 0 }}
-										exit={{ opacity: 0, y: -10 }}
+										exit={{ opacity: 0, y: 10 }}
 										transition={{ duration: 0.2, ease: "easeInOut" }}
 										className="space-y-2"
 									>
 										<h2 className="text-lg font-semibold">Actions</h2>
-										<AnimatePresence mode="wait" initial={false}>
-											{isCompleted || isDeadEnd ? (
-												<motion.div
-													key="game-end-actions"
-													initial={{ opacity: 0, y: 10 }}
-													animate={{ opacity: 1, y: 0 }}
-													exit={{ opacity: 0, y: -10 }}
-													transition={{ duration: 0.2, ease: "easeInOut" }}
-												>
-													<div className="flex flex-col gap-3 items-start">
-														<ShareButton />
-														<ResetButton />
-													</div>
-												</motion.div>
-											) : (
-												<motion.div
-													key="game-progress-actions"
-													initial={{ opacity: 0, y: 10 }}
-													animate={{ opacity: 1, y: 0 }}
-													exit={{ opacity: 0, y: -10 }}
-													transition={{ duration: 0.2, ease: "easeInOut" }}
-												>
-													<div className="grid grid-cols-2 gap-3">
+										<div className="flex flex-col gap-3 items-start">
+											{displayDifficulty === Difficulty.Hard ||
+											displayDifficulty === Difficulty.Expert ? (
+												// Hard mode: Put Hint button next to Reset button
+												<>
+													<div className="flex gap-3">
 														<UndoButton />
-														<HintButton />
+														<ResetButton />
+														{!isCompleted &&
+															displayDifficulty === Difficulty.Hard && (
+																<HintButton />
+															)}
+													</div>
+													<AnimatePresence mode="wait" initial={false}>
+														{isCompleted && (
+															<motion.div
+																key="share"
+																initial={{ opacity: 0, y: -10 }}
+																animate={{ opacity: 1, y: 0 }}
+																exit={{ opacity: 0, y: 10 }}
+																transition={{
+																	duration: 0.2,
+																	ease: "easeInOut",
+																}}
+															>
+																<ShareButton />
+															</motion.div>
+														)}
+													</AnimatePresence>
+												</>
+											) : (
+												// Easy/Medium mode: Keep original layout
+												<>
+													<div className="flex gap-3">
+														<UndoButton />
 														<ResetButton />
 													</div>
-												</motion.div>
+													<AnimatePresence mode="wait" initial={false}>
+														{isCompleted ? (
+															<motion.div
+																key="share"
+																initial={{ opacity: 0, y: -10 }}
+																animate={{ opacity: 1, y: 0 }}
+																exit={{ opacity: 0, y: 10 }}
+																transition={{
+																	duration: 0.2,
+																	ease: "easeInOut",
+																}}
+															>
+																<ShareButton />
+															</motion.div>
+														) : (
+															<motion.div
+																key="hint"
+																initial={{ opacity: 0, y: -10 }}
+																animate={{ opacity: 1, y: 0 }}
+																exit={{ opacity: 0, y: 10 }}
+																transition={{
+																	duration: 0.2,
+																	ease: "easeInOut",
+																}}
+															>
+																<HintButton />
+															</motion.div>
+														)}
+													</AnimatePresence>
+												</>
 											)}
-										</AnimatePresence>
+										</div>
 									</motion.div>
 								)}
 							</AnimatePresence>

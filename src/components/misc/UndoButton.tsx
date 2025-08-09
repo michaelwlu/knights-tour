@@ -1,18 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { Undo2 } from "lucide-react";
+import { Reply } from "lucide-react";
 import { useBoardContext } from "../../context/BoardContext";
 
-const UndoButton = () => {
+interface UndoButtonProps {
+	iconOnly?: boolean;
+}
+
+const UndoButton = ({ iconOnly = false }: UndoButtonProps) => {
 	const { handleUndoLastMove, isStarted, allowUndo } = useBoardContext();
 	return (
 		allowUndo && (
 			<Button
 				onClick={handleUndoLastMove}
-				variant={!allowUndo ? "ghost" : "outline"}
-				disabled={!isStarted || !allowUndo}
+				variant={"outline"}
+				disabled={!isStarted}
 				aria-label="Undo last move"
+				className={iconOnly ? "px-3" : ""}
 			>
-				<Undo2 aria-hidden="true" /> Undo
+				<Reply aria-hidden="true" />
+				{!iconOnly && <span>Undo</span>}
 			</Button>
 		)
 	);

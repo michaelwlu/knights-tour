@@ -10,9 +10,10 @@ The Knight's Tour is a mathematical problem where a knight on a chess board must
 
 ### 🎮 Game Modes
 
-- **Easy Mode**: Valid moves are highlighted, undo moves allowed
-- **Medium Mode**: Valid moves hidden, undo moves allowed
-- **Hard Mode**: Valid moves hidden, no undo functionality
+- **Easy Mode**: Valid moves highlighted, undo allowed, 5 hints
+- **Medium Mode**: Valid moves not highlighted, undo allowed, 4 hints
+- **Hard Mode**: Valid moves not highlighted, undo not allowed, 3 hints
+- **Expert Mode**: Valid moves not highlighted, undo not allowed, no hints
 
 ### 🎛️ Customization
 
@@ -119,6 +120,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📋 Changelog
 
+### [1.4.0] - 2025-08-09
+
+#### Added
+
+- **Expert Difficulty**: Fourth difficulty level with no hints available
+
+#### Changed
+
+- **Hint System**: Adjusted hint counts (Easy 5, Medium 4, Hard 3) and hide hint button on Expert
+- **Difficulty Settings**: Enhanced UI with clearer descriptions and consistent iconography
+- **Default Board Size**: Changed from 6×6 to 5×5 for lower difficulty threshold
+
+#### Fixed
+
+- **Hint Algorithm**: Eliminated suggestions that lead to dead-end positions
+- **Visual Effects**: Hint glow now properly extends beyond board edges
+- **Button Logic**: Share button only appears on completion; Undo button stays visible on game completion for Easy and Medium difficulties
+
 ### [1.3.0] - 2025-08-08
 
 #### Added
@@ -178,10 +197,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Move Validation**: L-shaped knight movement rules
 - **Completion Detection**: Win condition checking
 - **Basic Styling**: Initial visual design
-
-#### Technical
-
-- Next.js 14 project setup
-- TypeScript configuration
-- Basic component structure
-- Core game logic implementation
