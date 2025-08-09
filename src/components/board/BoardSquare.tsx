@@ -93,6 +93,22 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 	// Determine if square should be focusable
 	const isInteractive = (isLastMove && allowUndo) || (!isVisited && validMove);
 
+	// Determine if this square is a corner to apply rounded corners to outermost squares
+	const isTopLeft = row === 0 && column === 0;
+	const isTopRight = row === 0 && column === columns - 1;
+	const isBottomLeft = row === rows - 1 && column === 0;
+	const isBottomRight = row === rows - 1 && column === columns - 1;
+
+	const roundedClass = isTopLeft
+		? "rounded-tl-lg"
+		: isTopRight
+		? "rounded-tr-lg"
+		: isBottomLeft
+		? "rounded-bl-lg"
+		: isBottomRight
+		? "rounded-br-lg"
+		: "";
+
 	return (
 		<BoardSquareButton
 			variant={variant}
@@ -105,6 +121,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 			isHintSquare={isHintActive && isHintSquare}
 			highlightValidMoves={highlightValidMoves}
 			isValidMove={validMove}
+			className={roundedClass}
 			tabIndex={isInteractive ? 0 : -1}
 			role="gridcell"
 			aria-label={

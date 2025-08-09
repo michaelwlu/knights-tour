@@ -55,7 +55,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 							</span>
 						</li>
 						<li className={cn("flex gap-3 items-start")}>
-							<div className="rounded-full bg-blue-200 dark:bg-blue-800 w-6 h-6 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs font-bold">
+							<div className="rounded-full bg-zinc-200 dark:bg-zinc-800 w-6 h-6 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs font-bold">
 								L
 							</div>
 							<span>
