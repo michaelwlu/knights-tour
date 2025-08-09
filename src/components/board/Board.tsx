@@ -29,9 +29,9 @@ const Board = () => {
 			className="w-full max-w-[95vw] md:max-w-[70vh] xl:max-w-[80vh] mx-auto flex items-center justify-center aspect-square"
 			aria-label={`Knight's Tour game board, ${rows} by ${columns} squares`}
 		>
-			<div
+            <div
 				ref={boardRef}
-				className={`grid ${innerClass}`}
+                className={`grid ${innerClass} rounded-xl overflow-hidden`}
 				style={{
 					gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
 					gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
