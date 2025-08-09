@@ -68,6 +68,14 @@ const MAX_HINT_CANDIDATES = 4;
 const cloneBoard = (board: number[][]): number[][] =>
 	board.map((row) => row.slice());
 
+// DFS stack frame: [row, column, nextMoveIndexToTry, currentMoveNumber]
+type StackFrame = [
+	row: number,
+	column: number,
+	moveIndex: number,
+	moveNumber: number
+];
+
 export const getNextMoveHint = (
 	[currentRow, currentColumn]: [number, number],
 	currentMoveNumber: number,
@@ -129,7 +137,7 @@ export const getNextMoveHint = (
 
 		// Run depth-first search to check if this move leads to a solution
 		// Initialize stack with next position, index of next move to try, and current move number
-		const stack: [number, number, number, number][] = [
+		const stack: StackFrame[] = [
 			[nextRow, nextColumn, 0, currentMoveNumber + 2],
 		];
 
