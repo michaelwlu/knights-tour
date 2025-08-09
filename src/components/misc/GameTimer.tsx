@@ -1,5 +1,4 @@
 import { useBoardContext } from "@/context/BoardContext";
-import { GREEN_COLOR, RED_COLOR, YELLOW_COLOR } from "@/lib/constants";
 import { AnimatePresence, motion } from "framer-motion";
 import { Timer, TimerOff, TimerReset } from "lucide-react";
 
@@ -39,8 +38,7 @@ const GameTimer = () => {
 						transition={{ duration: 0.3, ease: "easeInOut" }}
 					>
 						<TimerReset
-							className={timerClasses}
-							color={GREEN_COLOR}
+							className={`${timerClasses} text-green-500`}
 							aria-hidden="true"
 						/>
 					</motion.div>
@@ -53,8 +51,7 @@ const GameTimer = () => {
 						transition={{ duration: 0.2, ease: "easeInOut" }}
 					>
 						<TimerOff
-							className={timerClasses}
-							color={RED_COLOR}
+							className={`${timerClasses} text-red-500`}
 							aria-hidden="true"
 						/>
 					</motion.div>
@@ -71,8 +68,7 @@ const GameTimer = () => {
 						transition={{ duration: 0.3, ease: "easeInOut" }}
 					>
 						<Timer
-							className={timerClasses}
-							color={YELLOW_COLOR}
+							className={`${timerClasses} text-yellow-500`}
 							aria-hidden="true"
 						/>
 					</motion.div>

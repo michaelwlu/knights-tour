@@ -40,9 +40,19 @@ export const getValidMovesWarnsdorf = (
 	[row, column]: [number, number],
 	board: number[][]
 ): [number, number][] => {
-	return getValidMoves([row, column], board).sort(
-		(a, b) => getValidMoves(a, board).length - getValidMoves(b, board).length
-	);
+	const moves = getValidMoves([row, column], board);
+
+	// Pre-compute move counts to avoid redundant getValidMoves calls during sorting
+	const movesWithCounts = moves.map((move) => ({
+		move,
+		count: getValidMoves(move, board).length,
+	}));
+
+	// Sort by count (Warnsdorf's rule: fewest onward moves first)
+	movesWithCounts.sort((a, b) => a.count - b.count);
+
+	// Return just the moves in sorted order
+	return movesWithCounts.map((item) => item.move);
 };
 
 const isInbounds = (
@@ -50,7 +60,9 @@ const isInbounds = (
 	board: number[][]
 ): boolean => {
 	const rowCount: number = board.length;
+	if (rowCount === 0) return false; // Guard against empty board
 	const columnCount: number = board[0].length;
+	if (columnCount === 0) return false; // Guard against empty rows
 	return row >= 0 && row < rowCount && column >= 0 && column < columnCount;
 };
 
@@ -68,12 +80,17 @@ const MAX_HINT_CANDIDATES = 4;
 const cloneBoard = (board: number[][]): number[][] =>
 	board.map((row) => row.slice());
 
-// DFS stack frame: [row, column, nextMoveIndexToTry, currentMoveNumber]
+// DFS stack frame fields:
+// [row, column, nextMoveIndexToTry, nextMoveNumberToAssign]
+// - nextMoveNumberToAssign represents the board value that will be written
+//   to the next visited square. With zero-based numbering (0..N-1), when this
+//   reaches totalSquares (N), it means 0..N-1 have already been assigned and
+//   the tour is complete.
 type StackFrame = [
 	row: number,
 	column: number,
 	moveIndex: number,
-	moveNumber: number
+	nextMoveNumberToAssign: number
 ];
 
 export const getNextMoveHint = (
@@ -114,31 +131,27 @@ export const getNextMoveHint = (
 	for (const [nextRow, nextColumn] of rankedCandidates) {
 		// Check if we've exceeded our computation time limit
 		if (Date.now() - startTime > MAX_COMPUTATION_TIME) {
-			// If we're taking too long, use Warnsdorf's rule to suggest moves
-			const warnsdorfMoves = getValidMovesWarnsdorf(
-				[currentRow, currentColumn],
-				board
-			);
-			if (warnsdorfMoves.length > 0) {
-				// Just take the first few moves from Warnsdorf's heuristic
-				return warnsdorfMoves.slice(
-					0,
-					Math.min(MAX_HINT_CANDIDATES, warnsdorfMoves.length)
-				);
-			}
+			// If we're taking too long, stop exploring further.
+			// We only return moves we have proven to lead to a full solution.
 			break;
 		}
 
 		// Create a deep copy of the board for this move's simulation
 		const boardCopy = cloneBoard(board);
 
-		// Mark the move as visited
+		// Mark the candidate next move as visited with the immediate next move number.
+		// If the last placed number on the real board is k, we place k+1 here.
 		boardCopy[nextRow][nextColumn] = currentMoveNumber + 1;
 
-		// Run depth-first search to check if this move leads to a solution
-		// Initialize stack with next position, index of next move to try, and current move number
+		// Prepare DFS to continue from this position. We track the
+		// "next move number to assign" as a running counter. After placing k+1
+		// above, the next number we intend to assign during DFS is k+2.
+		const nextMoveNumberToAssign = currentMoveNumber + 2;
+
+		// Initialize stack with next position, index of next move to try,
+		// and the next number that will be assigned if we move again.
 		const stack: StackFrame[] = [
-			[nextRow, nextColumn, 0, currentMoveNumber + 2],
+			[nextRow, nextColumn, 0, nextMoveNumberToAssign],
 		];
 
 		// Flag to track if this move leads to a solution
@@ -146,10 +159,13 @@ export const getNextMoveHint = (
 
 		// DFS using a stack to avoid recursion
 		while (stack.length > 0) {
-			const [row, column, moveIndex, moveNumber] = stack[stack.length - 1];
+			const [row, column, moveIndex, nextMoveNumberToAssignLocal] =
+				stack[stack.length - 1];
 
 			// If we've visited all squares, we've found a solution
-			if (moveNumber === totalSquares) {
+			// If the next number to assign equals totalSquares (N),
+			// it means numbers 0..N-1 have already been assigned.
+			if (nextMoveNumberToAssignLocal === totalSquares) {
 				leadsToSolution = true;
 				break;
 			}
@@ -168,13 +184,18 @@ export const getNextMoveHint = (
 			const [nextR, nextC] = nextValidMoves[moveIndex];
 
 			// Update stack entry to try next move index if we backtrack
-			stack[stack.length - 1] = [row, column, moveIndex + 1, moveNumber];
+			stack[stack.length - 1] = [
+				row,
+				column,
+				moveIndex + 1,
+				nextMoveNumberToAssignLocal,
+			];
 
-			// Mark position as visited with current move number
-			boardCopy[nextR][nextC] = moveNumber;
+			// Mark position as visited with the current nextMoveNumberToAssign
+			boardCopy[nextR][nextC] = nextMoveNumberToAssignLocal;
 
-			// Add next position to stack with move number incremented
-			stack.push([nextR, nextC, 0, moveNumber + 1]);
+			// Add next position to stack with the next number incremented
+			stack.push([nextR, nextC, 0, nextMoveNumberToAssignLocal + 1]);
 		}
 
 		// If this move led to a solution, add it to good moves
@@ -195,8 +216,8 @@ export const getNextMoveHint = (
 		return goodMoves;
 	}
 
-	// If none of the explored candidates lead to a full solution, fall back to
-	// top-ranked heuristic suggestions to keep the UI responsive and useful
-	const fallback = getValidMovesWarnsdorf([currentRow, currentColumn], board);
-	return fallback.slice(0, Math.min(MAX_HINT_CANDIDATES, fallback.length));
+	// If none of the explored candidates lead to a full solution, do not
+	// suggest heuristic moves as hints. Returning an empty list communicates
+	// that no safe, solution-leading moves are known from this position.
+	return [];
 };

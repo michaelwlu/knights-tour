@@ -61,23 +61,21 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 			: BoardSquareVariant.LAST_MOVE;
 	} else if (isVisited) {
 		variant = BoardSquareVariant.VISITED;
-	} else if (isStarted && validMove) {
-		if (isHintActive) {
-			// When hints are active, distinguish between hint squares and other valid moves
-			variant = isHintSquare
-				? BoardSquareVariant.VALID_MOVE // Full styling for hint squares
-				: BoardSquareVariant.HINT_VALID_MOVE; // Subtle styling for other valid moves
-		} else if (highlightValidMoves) {
-			// Normal behavior when hints are not active
-			variant = BoardSquareVariant.VALID_MOVE;
-		}
+	} else if (
+		!isDeadEnd &&
+		isStarted &&
+		validMove &&
+		(isHintActive || highlightValidMoves)
+	) {
+		// With simplified hint logic, any valid move to be shown uses the standard valid styling
+		variant = BoardSquareVariant.VALID_MOVE;
 	}
 
 	// Determine click handler
 	const handleClick = () => {
 		if (isLastMove && allowUndo) {
 			handleUndoLastMove();
-		} else if (!isVisited && validMove) {
+		} else if (!isDeadEnd && !isVisited && validMove) {
 			handleMoveNext([row, column]);
 		}
 	};
@@ -91,7 +89,8 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 	};
 
 	// Determine if square should be focusable
-	const isInteractive = (isLastMove && allowUndo) || (!isVisited && validMove);
+	const isInteractive =
+		(isLastMove && allowUndo) || (!isDeadEnd && !isVisited && validMove);
 
 	// Determine if this square is a corner to apply rounded corners to outermost squares
 	const isTopLeft = row === 0 && column === 0;
@@ -119,7 +118,7 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 			row={row}
 			column={column}
 			isHintSquare={isHintActive && isHintSquare}
-			highlightValidMoves={highlightValidMoves}
+			highlightValidMoves={highlightValidMoves && !isDeadEnd}
 			isValidMove={validMove}
 			className={roundedClass}
 			tabIndex={isInteractive ? 0 : -1}
@@ -127,13 +126,13 @@ const BoardSquare = ({ row, column }: BoardSquareProps) => {
 			aria-label={
 				isLastMove
 					? `Current position: ${moveNumber}. Press Enter to undo.`
-					: !isVisited && validMove
+					: !isDeadEnd && !isVisited && validMove
 					? `Valid move to row ${row + 1}, column ${
 							column + 1
 					  }. Press Enter to move.`
 					: isVisited
 					? `Move ${moveNumber}: row ${row + 1}, column ${column + 1}.`
-					: `Row ${row + 1}, column ${column + 1}. Not available.`
+					: `Row ${row + 1}, column ${column + 1}. Not a valid move.`
 			}
 		>
 			{isVisited ? moveNumber : ""}

@@ -10,10 +10,10 @@ import {
 import { RadioGroup } from "@/components/ui/radio-group";
 import { useBoardContext } from "@/context/BoardContext";
 import { useDimensionsForm } from "@/hooks/useDimensionsForm";
-import { GREEN_COLOR, RED_COLOR, YELLOW_COLOR } from "@/lib/constants";
+// Use Tailwind class-based colors instead of inline color constants
 import { Difficulty } from "@/lib/types";
-import { CheckCircle2, SlidersHorizontal, XCircle } from "lucide-react";
-import { JSX, useEffect, useState } from "react";
+import { Eye, Lightbulb, Reply, SlidersHorizontal } from "lucide-react";
+import { JSX, ReactNode, useEffect, useState } from "react";
 import DifficultyOption from "../config-difficulty/DifficultyOption";
 import BoardDimensionsOption from "../config-dimensions/BoardDimensionsOption";
 import CustomDimensionsInput from "../config-dimensions/CustomDimensionsInput";
@@ -68,57 +68,93 @@ const GameSettings = () => {
 		}
 	}, [open, boardDimensions.label, isCustomBoard, difficulty]);
 
+	// Shared description text and row helper
+	const DESC = {
+		VALID_HIGHLIGHTED: "Valid moves highlighted",
+		VALID_NOT_HIGHLIGHTED: "Valid moves not highlighted",
+		UNDO_ALLOWED: "Undo allowed",
+		UNDO_NOT_ALLOWED: "Undo not allowed",
+		HINTS_AVAILABLE: (count: number) => `${count} hints`,
+		NO_HINTS: "No hints",
+	} as const;
+
+	type DescriptionRowProps = { icon: JSX.Element; children: ReactNode };
+	const DescriptionRow = ({ icon, children }: DescriptionRowProps) => (
+		<div className="flex gap-2 items-center">
+			{icon}
+			<span>{children}</span>
+		</div>
+	);
+
 	// Difficulty descriptions
 	const DIFFICULTY_DESCRIPTIONS: Record<Difficulty, JSX.Element> = {
 		[Difficulty.Easy]: (
 			<div className="space-y-1.5">
-				<div className="flex gap-2 items-center">
-					<CheckCircle2 className="w-4 h-4 text-green-500" />
-					<span>Valid moves are shown</span>
-				</div>
-				<div className="flex gap-2 items-center">
-					<CheckCircle2 className="w-4 h-4 text-green-500" />
-					<span>Undo moves are allowed</span>
-				</div>
+				<DescriptionRow icon={<Eye className="w-4 h-4 text-green-600" />}>
+					{DESC.VALID_HIGHLIGHTED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Reply className="w-4 h-4 text-green-600" />}>
+					{DESC.UNDO_ALLOWED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Lightbulb className="w-4 h-4 text-green-600" />}>
+					{DESC.HINTS_AVAILABLE(5)}
+				</DescriptionRow>
 			</div>
 		),
 		[Difficulty.Medium]: (
 			<div className="space-y-1.5">
-				<div className="flex gap-2 items-center">
-					<XCircle className="w-4 h-4 text-red-500" />
-					<span>Valid moves are hidden</span>
-				</div>
-				<div className="flex gap-2 items-center">
-					<CheckCircle2 className="w-4 h-4 text-green-500" />
-					<span>Undo moves are allowed</span>
-				</div>
+				<DescriptionRow icon={<Eye className="w-4 h-4 text-red-600" />}>
+					{DESC.VALID_NOT_HIGHLIGHTED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Reply className="w-4 h-4 text-green-600" />}>
+					{DESC.UNDO_ALLOWED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Lightbulb className="w-4 h-4 text-green-600" />}>
+					{DESC.HINTS_AVAILABLE(4)}
+				</DescriptionRow>
 			</div>
 		),
 		[Difficulty.Hard]: (
 			<div className="space-y-1.5">
-				<div className="flex gap-2 items-center">
-					<XCircle className="w-4 h-4 text-red-500" />
-					<span>Valid moves are hidden</span>
-				</div>
-				<div className="flex gap-2 items-center">
-					<XCircle className="w-4 h-4 text-red-500" />
-					<span>No undoing moves</span>
-				</div>
+				<DescriptionRow icon={<Eye className="w-4 h-4 text-red-600" />}>
+					{DESC.VALID_NOT_HIGHLIGHTED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Reply className="w-4 h-4 text-red-600" />}>
+					{DESC.UNDO_NOT_ALLOWED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Lightbulb className="w-4 h-4 text-green-600" />}>
+					{DESC.HINTS_AVAILABLE(3)}
+				</DescriptionRow>
+			</div>
+		),
+		[Difficulty.Expert]: (
+			<div className="space-y-1.5">
+				<DescriptionRow icon={<Eye className="w-4 h-4 text-red-600" />}>
+					{DESC.VALID_NOT_HIGHLIGHTED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Reply className="w-4 h-4 text-red-600" />}>
+					{DESC.UNDO_NOT_ALLOWED}
+				</DescriptionRow>
+				<DescriptionRow icon={<Lightbulb className="w-4 h-4 text-red-600" />}>
+					{DESC.NO_HINTS}
+				</DescriptionRow>
 			</div>
 		),
 	};
 
-	// Get difficulty color
-	const getDifficultyColor = () => {
+	// Get difficulty color class
+	const getDifficultyColorClass = () => {
 		switch (difficulty) {
 			case Difficulty.Easy:
-				return GREEN_COLOR;
+				return "text-green-600";
 			case Difficulty.Medium:
-				return YELLOW_COLOR;
+				return "text-amber-600";
 			case Difficulty.Hard:
-				return RED_COLOR;
+				return "text-red-600";
+			case Difficulty.Expert:
+				return "text-fuchsia-600";
 			default:
-				return GREEN_COLOR;
+				return "text-green-600";
 		}
 	};
 
@@ -134,7 +170,7 @@ const GameSettings = () => {
 						{boardDimensions.rows} × {boardDimensions.columns}
 					</span>
 					<div className="w-px h-4 bg-border" />
-					<span style={{ color: getDifficultyColor() }}>{difficulty}</span>
+					<span className={getDifficultyColorClass()}>{difficulty}</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="flex flex-col sm:max-w-md">
