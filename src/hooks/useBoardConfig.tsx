@@ -20,9 +20,9 @@ const MIN_DIMENSION = 5;
 const MAX_DIMENSION = 12;
 
 const useBoardConfig = (): UseBoardConfigReturn => {
-	const [boardDimensions, setBoardDimensions] = useState<BoardDimensionOption>(
-		BOARD_DIMENSION_OPTIONS[3] // 8×8 (Classic)
-	);
+    const [boardDimensions, setBoardDimensions] = useState<BoardDimensionOption>(
+        BOARD_DIMENSION_OPTIONS[1] // 6×6 (Friendlier default)
+    );
 	const [isCustomBoard, setIsCustomBoard] = useState(false);
 
 	const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.Easy);
