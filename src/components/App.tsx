@@ -189,7 +189,7 @@ const App = () => {
 						</div>
 
 						{/* Game Controls / Instructions */}
-						<div className="min-h-[8rem]">
+						<div className="min-h-[9rem]">
 							<AnimatePresence mode="wait">
 								{!isStarted ? (
 									<motion.div
@@ -213,9 +213,16 @@ const App = () => {
 										</div>
 									</motion.div>
 								) : (
-									<div className="space-y-2">
+									<motion.div
+										key="desktop-actions"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										transition={{ duration: 0.2, ease: "easeInOut" }}
+										className="space-y-2"
+									>
 										<h2 className="text-lg font-semibold">Actions</h2>
-										<AnimatePresence mode="wait">
+										<AnimatePresence mode="wait" initial={false}>
 											{isCompleted || isDeadEnd ? (
 												<motion.div
 													key="game-end-actions"
@@ -245,7 +252,7 @@ const App = () => {
 												</motion.div>
 											)}
 										</AnimatePresence>
-									</div>
+									</motion.div>
 								)}
 							</AnimatePresence>
 						</div>

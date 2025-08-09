@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -40,6 +41,9 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader className="text-left">
 					<DialogTitle className="text-2xl">How to Play</DialogTitle>
+					<DialogDescription className="sr-only">
+						Learn the rules and controls for playing the Knight&apos;s Tour
+					</DialogDescription>
 				</DialogHeader>
 				<div className="mt-1 space-y-6">
 					<ul className="space-y-4 text-base text-foreground/80">
@@ -47,7 +51,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-6 h-6 mt-0.5 flex-shrink-0" />
 							<span>
 								<strong>{actionWord} any square to start</strong> - the knight
-								will move there and begin your tour.
+								will move there and begin your tour
 							</span>
 						</li>
 						<li className={cn("flex gap-3 items-start")}>
@@ -56,7 +60,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 							</div>
 							<span>
 								<strong>Knights move in L-shapes</strong> - 2 squares in one
-								direction, then 1 square perpendicular.
+								direction, then 1 square perpendicular
 							</span>
 						</li>
 						<li className={cn("flex gap-3 items-start")}>
@@ -65,7 +69,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 							</div>
 							<span>
 								<strong>Goal: visit every square exactly once</strong> - each
-								square can only be visited once during your tour.
+								square can only be visited once during your tour
 							</span>
 						</li>
 						<li className={cn("flex gap-3 items-start")}>
@@ -74,7 +78,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 							</div>
 							<span>
 								<strong>Numbers show move order</strong> - red squares indicate
-								dead ends with no valid moves.
+								dead ends with no valid moves
 							</span>
 						</li>
 					</ul>

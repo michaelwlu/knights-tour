@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -139,6 +140,9 @@ const GameSettings = () => {
 			<DialogContent className="flex flex-col sm:max-w-md">
 				<DialogHeader className="text-left">
 					<DialogTitle className="text-xl">Game Settings</DialogTitle>
+					<DialogDescription className="sr-only">
+						Change the board size and difficulty of the game
+					</DialogDescription>
 				</DialogHeader>
 				<div>
 					{/* Tab Navigation */}
