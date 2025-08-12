@@ -17,8 +17,28 @@ export const metadata: Metadata = {
 	title: "Knight's Tour",
 	description:
 		"A chess puzzle where you move a knight to visit every square on the board exactly once",
+	metadataBase: new URL("https://knightstour.michaelw.lu"),
 	icons: {
 		icon: "/icon.svg",
+	},
+	openGraph: {
+		title: "Knight's Tour",
+		description:
+			"A chess puzzle where you move a knight to visit every square on the board exactly once",
+		images: [
+			{
+				url: "/og.png",
+				width: 1200,
+				height: 630,
+			},
+		],
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Knight's Tour",
+		description:
+			"A chess puzzle where you move a knight to visit every square on the board exactly once",
+		images: ["/og.png"],
 	},
 };
 
