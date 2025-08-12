@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,34 +14,56 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-	title: "Knight's Tour",
-	description:
-		"A chess puzzle where you move a knight to visit every square on the board exactly once",
-	metadataBase: new URL("https://knightstour.michaelw.lu"),
-	icons: {
-		icon: "/icon.svg",
-	},
-	openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+	const headersList = await headers();
+	const host =
+		headersList.get("x-forwarded-host") ||
+		headersList.get("host") ||
+		"knightstour.michaelw.lu";
+	const protocol = headersList.get("x-forwarded-proto") || "https";
+	const baseUrl = new URL(`${protocol}://${host}`);
+
+	return {
 		title: "Knight's Tour",
 		description:
 			"A chess puzzle where you move a knight to visit every square on the board exactly once",
-		images: [
+		metadataBase: baseUrl,
+		authors: [
 			{
-				url: "/og.png",
-				width: 1200,
-				height: 630,
+				name: "Michael W. Lu",
+				url: "https://michaelw.lu",
 			},
 		],
-	},
-	twitter: {
-		card: "summary_large_image",
-		title: "Knight's Tour",
-		description:
-			"A chess puzzle where you move a knight to visit every square on the board exactly once",
-		images: ["/og.png"],
-	},
-};
+		creator: "Michael W. Lu",
+		icons: {
+			icon: "/icon.svg",
+		},
+		openGraph: {
+			title: "Knight's Tour",
+			description:
+				"A chess puzzle where you move a knight to visit every square on the board exactly once",
+			type: "website",
+			url: baseUrl.toString(),
+			siteName: "Knight's Tour",
+			locale: "en_US",
+			images: [
+				{
+					url: "/opengraph-image.png",
+					width: 1200,
+					height: 630,
+					alt: "Knight's Tour - A chess puzzle game",
+				},
+			],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: "Knight's Tour",
+			description:
+				"A chess puzzle where you move a knight to visit every square on the board exactly once",
+			images: ["/twitter-image.png"],
+		},
+	};
+}
 
 export default function RootLayout({
 	children,
