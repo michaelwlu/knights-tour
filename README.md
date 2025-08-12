@@ -4,16 +4,16 @@ A modern, interactive web application for solving the classic Knight's Tour ches
 
 ## 🎯 About
 
-The Knight's Tour is a mathematical problem where a knight on a chess board must visit every square exactly once. This application provides an elegant, user-friendly interface for exploring this fascinating puzzle with various board sizes and difficulty levels.
+The Knight's Tour is a mathematical problem where a knight on a chess board must visit every square exactly once. This application provides an elegant, user-friendly interface for exploring this fascinating puzzle with various board sizes and game modes that offer different levels of assistance.
 
 ## ✨ Features
 
 ### 🎮 Game Modes
 
-- **Easy Mode**: Valid moves highlighted, undo allowed, 5 hints
-- **Medium Mode**: Valid moves not highlighted, undo allowed, 4 hints
-- **Hard Mode**: Valid moves not highlighted, undo not allowed, 3 hints
-- **Expert Mode**: Valid moves not highlighted, undo not allowed, no hints
+- **Novice**: Valid moves highlighted, undo allowed, 5 hints
+- **Competitor**: Valid moves not highlighted, undo allowed, 4 hints
+- **Expert**: Valid moves not highlighted, undo not allowed, 3 hints
+- **Grandmaster**: Valid moves not highlighted, undo not allowed, no hints
 
 ### 🎛️ Customization
 
@@ -119,6 +119,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ## 📋 Changelog
+
+### [1.5.0] - 2025-01-26
+
+#### Added
+
+- **Chess-Themed Game Modes**: Replaced generic difficulty names with chess titles (Novice, Competitor, Expert, Grandmaster)
+- **Enhanced Settings UI**: Two-button layout with clear icons (Grid for board size, Target for game mode)
+- **Direct Tab Navigation**: Clicking board size or mode buttons opens dialog to specific settings tab
+
+#### Changed
+
+- **Improved Clarity**: "Difficulty" renamed to "Mode" to better reflect game assistance features rather than puzzle complexity
+- **Better Visual Separation**: Separate buttons for board size and game mode eliminate user confusion
+- **Thematic Consistency**: Chess terminology throughout the game creates cohesive Knight's Tour experience
 
 ### [1.4.0] - 2025-08-09
 

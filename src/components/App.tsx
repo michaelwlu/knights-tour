@@ -246,7 +246,7 @@ const App = () => {
 										<div className="flex flex-col gap-3 items-start">
 											{displayDifficulty === Difficulty.Hard ||
 											displayDifficulty === Difficulty.Expert ? (
-												// Hard mode: Put Hint button next to Reset button
+												// Hard/Expert mode: Put Hint button next to Reset button
 												<>
 													<div className="flex gap-3">
 														<UndoButton />
