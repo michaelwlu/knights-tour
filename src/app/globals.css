@@ -121,7 +121,35 @@
   }
 }
 
-/* Keyframe animation for the hint pulse effect with inner and outer edge glow */
+/* Wrapper-scoped pulsing grid overlay */
+.app-shell { isolation: isolate; }
+.app-shell:has(.game-started)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.18) 1px, transparent 1px),
+    linear-gradient(to right, rgba(0,0,0,0.18) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.26;
+  pointer-events: none;
+  animation: grid-pulse 6s ease-in-out infinite;
+  z-index: 0; /* behind content */
+}
+.dark .app-shell:has(.game-started)::before {
+  background-image:
+    linear-gradient(to bottom, rgba(255,255,255,0.22) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255,255,255,0.22) 1px, transparent 1px);
+}
+/* Ensure shell children paint above the overlay */
+.app-shell > * { position: relative; z-index: 1; }
+
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.42; }
+}
+
+/* Other animations kept for existing components */
 @keyframes hint-pulse {
   0% { 
     box-shadow: 
@@ -140,7 +168,6 @@
   }
 }
 
-/* Fade-in for visited move numbers */
 @keyframes visited-fade-in {
   from {
     opacity: 0;

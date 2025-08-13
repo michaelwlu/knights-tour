@@ -82,7 +82,7 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="h-[100svh] overflow-hidden px-4 py-2 md:px-6 md:py-4">
+					<div className="app-shell relative h-[100svh] overflow-hidden px-4 py-2 md:px-6 md:py-4">
 						{children}
 					</div>
 				</ThemeProvider>

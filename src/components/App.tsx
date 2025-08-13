@@ -53,6 +53,10 @@ const App = () => {
 		}
 	}, [difficulty, isStarted, isTransitioning]);
 
+	// Apply game state classes to body element for full-screen grid pattern
+	// Removed useEffect; we will toggle a class directly on the main element
+	const isActive = isStarted && !isCompleted && !isDeadEnd;
+
 	// Check if this is the user's first visit (client-side only)
 	useEffect(() => {
 		// Ensure we're in the browser before accessing localStorage
@@ -83,7 +87,9 @@ const App = () => {
 
 	return (
 		<main
-			className="flex justify-center items-center w-full h-full"
+			className={`flex justify-center items-center w-full h-full ${
+				isActive ? "game-started" : "game-not-started"
+			}`}
 			role="main"
 		>
 			{/* Live region for game status announcements */}
