@@ -120,19 +120,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📋 Changelog
 
-### [1.5.0] - 2025-01-26
+### [1.5.0] - 2025-08-15
 
 #### Added
 
-- **Chess-Themed Game Modes**: Replaced generic difficulty names with chess titles (Novice, Competitor, Expert, Grandmaster)
-- **Enhanced Settings UI**: Two-button layout with clear icons (Grid for board size, Target for game mode)
-- **Direct Tab Navigation**: Clicking board size or mode buttons opens dialog to specific settings tab
+- **Background Animation**: Dynamic subtle background animation during gameplay
+- **Social Media Integration**: Custom Open Graph images for enhanced social sharing
 
 #### Changed
 
 - **Improved Clarity**: "Difficulty" renamed to "Mode" to better reflect game assistance features rather than puzzle complexity
-- **Better Visual Separation**: Separate buttons for board size and game mode eliminate user confusion
-- **Thematic Consistency**: Chess terminology throughout the game creates cohesive Knight's Tour experience
+- **Chess-Themed Game Modes**: Replaced generic difficulty names with chess titles (Novice, Competitor, Expert, Grandmaster)
+- **Enhanced Settings UI**: Separate buttons for board size and game mode eliminate user confusion
 
 ### [1.4.0] - 2025-08-09
 

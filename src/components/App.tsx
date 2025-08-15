@@ -2,6 +2,7 @@ import { ModeToggle } from "@/components/misc/ModeToggle";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Difficulty } from "@/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useBoardContext } from "../context/BoardContext";
 import Board from "./board/Board";
@@ -105,10 +106,18 @@ const App = () => {
 			{/* Mobile/Tablet Layout - Vertical Stack (screens below 768px) */}
 			<div className="flex flex-col gap-4 justify-center items-center w-full h-full md:hidden">
 				<div className="flex justify-between items-end w-full">
-					<h1 className="text-4xl font-bold">
-						Knight&apos;s
-						<br />
-						Tour <span className="ml-1 text-5xl">♞</span>
+					<h1 className="flex flex-col gap-1 text-4xl font-bold">
+						<div>Knight&apos;s</div>
+						<div className="flex gap-2 items-center">
+							Tour
+							<Image
+								src="/logo.png"
+								alt="Knight's Tour Logo"
+								width={30}
+								height={30}
+								className="w-9 h-9 dark:invert"
+							/>
+						</div>
 					</h1>
 					<div className="flex gap-1 justify-between items-center">
 						<Instructions
@@ -189,10 +198,19 @@ const App = () => {
 					<div className="flex flex-col gap-7 p-6 w-80">
 						{/* Header */}
 						<div className="flex flex-col gap-4 justify-between items-start">
-							<h1 className="text-4xl font-bold">
-								Knight&apos;s
-								<br />
-								Tour <span className="ml-1 text-5xl">♞</span>
+							<h1 className="flex flex-col gap-2 items-start text-4xl font-bold">
+								<Image
+									src="/logo.png"
+									alt="Knight's Tour Logo"
+									width={40}
+									height={40}
+									className="w-10 h-10 dark:invert"
+								/>
+								<div>
+									Knight&apos;s
+									<br />
+									Tour
+								</div>
 							</h1>
 							<div className="flex gap-2 items-center">
 								<Instructions

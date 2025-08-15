@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	return {
 		title: "Knight's Tour",
 		description:
-			"A chess puzzle where you move a knight to visit every square on the board exactly once",
+			"Guide a chess knight to visit every square in this classic puzzle",
 		metadataBase: baseUrl,
 		authors: [
 			{
@@ -36,12 +36,12 @@ export async function generateMetadata(): Promise<Metadata> {
 		],
 		creator: "Michael W. Lu",
 		icons: {
-			icon: "/icon.svg",
+			icon: "/logo.png",
 		},
 		openGraph: {
 			title: "Knight's Tour",
 			description:
-				"A chess puzzle where you move a knight to visit every square on the board exactly once",
+				"Guide a chess knight to visit every square in this classic puzzle",
 			type: "website",
 			url: baseUrl.toString(),
 			siteName: "Knight's Tour",
@@ -55,12 +55,15 @@ export async function generateMetadata(): Promise<Metadata> {
 				},
 			],
 		},
+		other: {
+			"og:logo": "/logo.png",
+		},
 		twitter: {
 			card: "summary_large_image",
 			title: "Knight's Tour",
 			description:
-				"A chess puzzle where you move a knight to visit every square on the board exactly once",
-			images: ["/twitter-image.png"],
+				"Guide a chess knight to visit every square in this classic puzzle",
+			images: ["/opengraph-image.png"],
 		},
 	};
 }

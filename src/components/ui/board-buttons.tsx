@@ -21,7 +21,7 @@ export enum TextSizeVariant {
 // Style variants for different square states - using enum values as keys
 const squareVariants = {
 	[BoardSquareVariant.UNVISITED]:
-		"bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900/50 active:bg-amber-100 dark:active:bg-amber-900/40 text-black dark:text-white",
+		"bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900 active:bg-amber-100 dark:active:bg-amber-800 text-black dark:text-white",
 	[BoardSquareVariant.LAST_MOVE]:
 		"bg-amber-200 dark:bg-amber-800 hover:bg-amber-400 dark:hover:bg-amber-700 active:bg-amber-300 dark:active:bg-amber-700 text-black dark:text-amber-100",
 	[BoardSquareVariant.DEAD_END]:
@@ -99,8 +99,8 @@ export const BoardSquareButton = React.forwardRef<
 			if (variant === BoardSquareVariant.UNVISITED) {
 				const shouldUseAmberHover = highlightValidMoves && isValidMove;
 				variantStyle = shouldUseAmberHover
-					? "bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900/50 active:bg-amber-100 dark:active:bg-amber-900/50 text-black dark:text-white"
-					: "bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900/40 active:bg-amber-100 dark:active:bg-amber-900/40 text-black dark:text-white";
+					? "bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900 active:bg-amber-100 dark:active:bg-amber-800 text-black dark:text-white"
+					: "bg-white dark:bg-zinc-950 hover:bg-amber-100 dark:hover:bg-amber-900 active:bg-amber-100 dark:active:bg-amber-800 text-black dark:text-white";
 			}
 
 			// Apply checkerboard pattern only to unvisited squares
