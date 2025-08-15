@@ -121,7 +121,50 @@
   }
 }
 
-/* Keyframe animation for the hint pulse effect with inner and outer edge glow */
+/* Wrapper-scoped diagonal grid opacity sweep overlay */
+.app-shell { isolation: isolate; }
+.app-shell:has(.game-started)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.18) 1px, transparent 1px),
+    linear-gradient(to right, rgba(0,0,0,0.18) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 1;
+  pointer-events: none;
+  mask: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.4) 40%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.4) 60%,
+    transparent 65%,
+    transparent 100%
+  );
+  mask-size: 600% 100%;
+  animation: grid-opacity-sweep 20s linear infinite;
+  z-index: -1; /* behind all content */
+}
+.dark .app-shell:has(.game-started)::before {
+  background-image:
+    linear-gradient(to bottom, rgba(255,255,255,0.18) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255,255,255,0.18) 1px, transparent 1px);
+}
+/* Ensure shell children paint above the overlay */
+.app-shell > * { position: relative; z-index: 10; }
+
+@keyframes grid-opacity-sweep {
+  0% { 
+    mask-position: -150% 0%;
+  }
+  100% { 
+    mask-position: 150% 0%;
+  }
+}
+
+/* Other animations kept for existing components */
 @keyframes hint-pulse {
   0% { 
     box-shadow: 
@@ -140,7 +183,6 @@
   }
 }
 
-/* Fade-in for visited move numbers */
 @keyframes visited-fade-in {
   from {
     opacity: 0;

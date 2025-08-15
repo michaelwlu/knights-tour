@@ -12,7 +12,7 @@ import { useBoardContext } from "@/context/BoardContext";
 import { useDimensionsForm } from "@/hooks/useDimensionsForm";
 // Use Tailwind class-based colors instead of inline color constants
 import { Difficulty } from "@/lib/types";
-import { Eye, Lightbulb, Reply, SlidersHorizontal } from "lucide-react";
+import { Crown, Eye, Grid2x2, Lightbulb, Reply } from "lucide-react";
 import { JSX, ReactNode, useEffect, useState } from "react";
 import DifficultyOption from "../config-difficulty/DifficultyOption";
 import BoardDimensionsOption from "../config-dimensions/BoardDimensionsOption";
@@ -161,23 +161,40 @@ const GameSettings = () => {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline" className="flex gap-2 items-center">
-					<SlidersHorizontal
-						className="h-[1.2rem] w-[1.2rem]"
-						aria-hidden="true"
-					/>
-					<span>
-						{boardDimensions.rows} × {boardDimensions.columns}
-					</span>
-					<div className="w-px h-4 bg-border" />
-					<span className={getDifficultyColorClass()}>{difficulty}</span>
-				</Button>
+				<div className="flex">
+					<Button
+						variant="outline"
+						className="flex gap-2 items-center rounded-r-none border-r-0"
+						onClick={() => {
+							setActiveTab("board");
+							setOpen(true);
+						}}
+					>
+						<Grid2x2 className="w-4 h-4" aria-hidden="true" />
+						<span className="font-medium">
+							{boardDimensions.rows} × {boardDimensions.columns}
+						</span>
+					</Button>
+					<Button
+						variant="outline"
+						className="flex gap-2 items-center rounded-l-none"
+						onClick={() => {
+							setActiveTab("difficulty");
+							setOpen(true);
+						}}
+					>
+						<Crown className="w-4 h-4" aria-hidden="true" />
+						<span className={`font-medium ${getDifficultyColorClass()}`}>
+							{difficulty}
+						</span>
+					</Button>
+				</div>
 			</DialogTrigger>
 			<DialogContent className="flex flex-col sm:max-w-md">
 				<DialogHeader className="text-left">
 					<DialogTitle className="text-xl">Game Settings</DialogTitle>
 					<DialogDescription className="sr-only">
-						Change the board size and difficulty of the game
+						Change the board size and game mode
 					</DialogDescription>
 				</DialogHeader>
 				<div>
@@ -201,7 +218,7 @@ const GameSettings = () => {
 									: "border-transparent text-muted-foreground hover:text-foreground"
 							}`}
 						>
-							Difficulty
+							Mode
 						</button>
 					</div>
 

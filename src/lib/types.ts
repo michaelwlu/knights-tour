@@ -5,8 +5,8 @@ export type BoardDimensionOption = {
 };
 
 export enum Difficulty {
-	Easy = "Easy",
-	Medium = "Medium",
-	Hard = "Hard",
-	Expert = "Expert",
+	Easy = "Novice",
+	Medium = "Competitor",
+	Hard = "Expert",
+	Expert = "Grandmaster",
 }

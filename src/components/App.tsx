@@ -2,6 +2,7 @@ import { ModeToggle } from "@/components/misc/ModeToggle";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Difficulty } from "@/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useBoardContext } from "../context/BoardContext";
 import Board from "./board/Board";
@@ -53,6 +54,10 @@ const App = () => {
 		}
 	}, [difficulty, isStarted, isTransitioning]);
 
+	// Apply game state classes to body element for full-screen grid pattern
+	// Removed useEffect; we will toggle a class directly on the main element
+	const isActive = isStarted && !isCompleted && !isDeadEnd;
+
 	// Check if this is the user's first visit (client-side only)
 	useEffect(() => {
 		// Ensure we're in the browser before accessing localStorage
@@ -83,7 +88,9 @@ const App = () => {
 
 	return (
 		<main
-			className="flex justify-center items-center w-full h-full"
+			className={`flex justify-center items-center w-full h-full ${
+				isActive ? "game-started" : "game-not-started"
+			}`}
 			role="main"
 		>
 			{/* Live region for game status announcements */}
@@ -99,10 +106,18 @@ const App = () => {
 			{/* Mobile/Tablet Layout - Vertical Stack (screens below 768px) */}
 			<div className="flex flex-col gap-4 justify-center items-center w-full h-full md:hidden">
 				<div className="flex justify-between items-end w-full">
-					<h1 className="text-4xl font-bold">
-						Knight&apos;s
-						<br />
-						Tour <span className="ml-1 text-5xl">♞</span>
+					<h1 className="flex flex-col gap-1 text-4xl font-bold">
+						<div>Knight&apos;s</div>
+						<div className="flex gap-2 items-center">
+							Tour
+							<Image
+								src="/logo.png"
+								alt="Knight's Tour Logo"
+								width={30}
+								height={30}
+								className="w-9 h-9 dark:invert"
+							/>
+						</div>
 					</h1>
 					<div className="flex gap-1 justify-between items-center">
 						<Instructions
@@ -183,10 +198,19 @@ const App = () => {
 					<div className="flex flex-col gap-7 p-6 w-80">
 						{/* Header */}
 						<div className="flex flex-col gap-4 justify-between items-start">
-							<h1 className="text-4xl font-bold">
-								Knight&apos;s
-								<br />
-								Tour <span className="ml-1 text-5xl">♞</span>
+							<h1 className="flex flex-col gap-2 items-start text-4xl font-bold">
+								<Image
+									src="/logo.png"
+									alt="Knight's Tour Logo"
+									width={40}
+									height={40}
+									className="w-10 h-10 dark:invert"
+								/>
+								<div>
+									Knight&apos;s
+									<br />
+									Tour
+								</div>
 							</h1>
 							<div className="flex gap-2 items-center">
 								<Instructions
@@ -246,7 +270,7 @@ const App = () => {
 										<div className="flex flex-col gap-3 items-start">
 											{displayDifficulty === Difficulty.Hard ||
 											displayDifficulty === Difficulty.Expert ? (
-												// Hard mode: Put Hint button next to Reset button
+												// Hard/Expert mode: Put Hint button next to Reset button
 												<>
 													<div className="flex gap-3">
 														<UndoButton />
