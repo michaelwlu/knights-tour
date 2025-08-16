@@ -1,7 +1,6 @@
 import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { headers } from "next/headers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,19 +14,13 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-	const headersList = await headers();
-	const host =
-		headersList.get("x-forwarded-host") ||
-		headersList.get("host") ||
-		"knightstour.michaelw.lu";
-	const protocol = headersList.get("x-forwarded-proto") || "https";
-	const baseUrl = new URL(`${protocol}://${host}`);
+	const productionUrl = new URL("https://knightstour.michaelw.lu");
 
 	return {
 		title: "Knight's Tour",
 		description:
 			"Guide a chess knight to visit every square in this classic puzzle",
-		metadataBase: baseUrl,
+		metadataBase: productionUrl,
 		authors: [
 			{
 				name: "Michael W. Lu",
@@ -43,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
 			description:
 				"Guide a chess knight to visit every square in this classic puzzle",
 			type: "website",
-			url: baseUrl.toString(),
+			url: productionUrl.toString(),
 			siteName: "Knight's Tour",
 			locale: "en_US",
 			images: [
