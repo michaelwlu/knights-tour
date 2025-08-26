@@ -32,6 +32,10 @@ const App = () => {
 	// First visit detection and instructions modal state
 	const [instructionsOpen, setInstructionsOpen] = useState(false);
 
+	// Settings dialog state - separate for mobile and desktop
+	const [mobileSettingsOpen, setMobileSettingsOpen] = useState(false);
+	const [desktopSettingsOpen, setDesktopSettingsOpen] = useState(false);
+
 	// Track display difficulty to prevent layout changes during transitions
 	const [displayDifficulty, setDisplayDifficulty] = useState(difficulty);
 
@@ -123,13 +127,17 @@ const App = () => {
 						<Instructions
 							open={instructionsOpen}
 							onOpenChange={setInstructionsOpen}
+							onOpenSettings={() => setMobileSettingsOpen(true)}
 						/>
 						<ModeToggle />
 					</div>
 				</div>
 				<div className="flex gap-3 justify-between items-center mt-2 w-full">
 					<GameTimer />
-					<GameSettings />
+					<GameSettings
+						open={mobileSettingsOpen}
+						onOpenChange={setMobileSettingsOpen}
+					/>
 				</div>
 				<Board />
 				<div className="flex items-start justify-center min-h-[3rem]">
@@ -179,7 +187,7 @@ const App = () => {
 										>
 											<UndoButton />
 											<ResetButton />
-											{displayDifficulty !== Difficulty.Expert && (
+											{displayDifficulty !== Difficulty.Grandmaster && (
 												<HintButton />
 											)}
 										</motion.div>
@@ -216,6 +224,7 @@ const App = () => {
 								<Instructions
 									open={instructionsOpen}
 									onOpenChange={setInstructionsOpen}
+									onOpenSettings={() => setDesktopSettingsOpen(true)}
 								/>
 								<ModeToggle />
 							</div>
@@ -230,7 +239,10 @@ const App = () => {
 						{/* Game Settings */}
 						<div className="space-y-3">
 							<h2 className="text-lg font-semibold">Settings</h2>
-							<GameSettings />
+							<GameSettings
+								open={desktopSettingsOpen}
+								onOpenChange={setDesktopSettingsOpen}
+							/>
 						</div>
 
 						{/* Game Controls / Instructions */}
@@ -268,15 +280,15 @@ const App = () => {
 									>
 										<h2 className="text-lg font-semibold">Actions</h2>
 										<div className="flex flex-col gap-3 items-start">
-											{displayDifficulty === Difficulty.Hard ||
-											displayDifficulty === Difficulty.Expert ? (
+											{displayDifficulty === Difficulty.Expert ||
+											displayDifficulty === Difficulty.Grandmaster ? (
 												// Hard/Expert mode: Put Hint button next to Reset button
 												<>
 													<div className="flex gap-3">
 														<UndoButton />
 														<ResetButton />
 														{!isCompleted &&
-															displayDifficulty === Difficulty.Hard && (
+															displayDifficulty === Difficulty.Expert && (
 																<HintButton />
 															)}
 													</div>

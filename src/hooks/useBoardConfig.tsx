@@ -25,10 +25,10 @@ const useBoardConfig = (): UseBoardConfigReturn => {
 	);
 	const [isCustomBoard, setIsCustomBoard] = useState(false);
 
-	const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.Easy);
+	const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.Novice);
 	const allowUndo =
-		difficulty === Difficulty.Easy || difficulty === Difficulty.Medium;
-	const highlightValidMoves = difficulty === Difficulty.Easy;
+		difficulty === Difficulty.Novice || difficulty === Difficulty.Competitor;
+	const highlightValidMoves = difficulty === Difficulty.Novice;
 
 	// Function to set custom board dimensions
 	const setCustomBoardDimensions = (rows: number, columns: number) => {
