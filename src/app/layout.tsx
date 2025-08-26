@@ -29,34 +29,34 @@ export async function generateMetadata(): Promise<Metadata> {
 		],
 		creator: "Michael W. Lu",
 		icons: {
-			icon: "/logo.png",
+			icon: `${productionUrl.origin}/logo.png`,
 		},
 		openGraph: {
 			title: "Knight's Tour",
 			description:
 				"Guide a chess knight to visit every square in this classic puzzle",
 			type: "website",
-			url: productionUrl.toString(),
+			url: productionUrl.href,
 			siteName: "Knight's Tour",
 			locale: "en_US",
 			images: [
 				{
-					url: "/opengraph-image.png",
+					url: `${productionUrl.origin}/opengraph-image.png`,
 					width: 1200,
 					height: 630,
 					alt: "Knight's Tour - A chess puzzle game",
 				},
 			],
 		},
-		other: {
-			"og:logo": "/logo.png",
-		},
 		twitter: {
 			card: "summary_large_image",
 			title: "Knight's Tour",
 			description:
 				"Guide a chess knight to visit every square in this classic puzzle",
-			images: ["/opengraph-image.png"],
+			images: [`${productionUrl.origin}/opengraph-image.png`],
+		},
+		alternates: {
+			canonical: productionUrl.href,
 		},
 	};
 }
