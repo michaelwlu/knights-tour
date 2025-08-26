@@ -19,7 +19,12 @@ import BoardDimensionsOption from "../config-dimensions/BoardDimensionsOption";
 import CustomDimensionsInput from "../config-dimensions/CustomDimensionsInput";
 import { BOARD_DIMENSION_OPTIONS } from "../config-dimensions/dimensionOptions";
 
-const GameSettings = () => {
+interface GameSettingsProps {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+}
+
+const GameSettings = ({ open, onOpenChange }: GameSettingsProps) => {
 	const {
 		boardDimensions,
 		setBoardDimensions,
@@ -38,9 +43,6 @@ const GameSettings = () => {
 	// Difficulty state
 	const [selectedDifficulty, setSelectedDifficulty] =
 		useState<Difficulty>(difficulty);
-
-	// Dialog state
-	const [open, setOpen] = useState(false);
 
 	// Tab state
 	const [activeTab, setActiveTab] = useState<"board" | "difficulty">("board");
@@ -88,7 +90,7 @@ const GameSettings = () => {
 
 	// Difficulty descriptions
 	const DIFFICULTY_DESCRIPTIONS: Record<Difficulty, JSX.Element> = {
-		[Difficulty.Easy]: (
+		[Difficulty.Novice]: (
 			<div className="space-y-1.5">
 				<DescriptionRow icon={<Eye className="w-4 h-4 text-green-600" />}>
 					{DESC.VALID_HIGHLIGHTED}
@@ -101,7 +103,7 @@ const GameSettings = () => {
 				</DescriptionRow>
 			</div>
 		),
-		[Difficulty.Medium]: (
+		[Difficulty.Competitor]: (
 			<div className="space-y-1.5">
 				<DescriptionRow icon={<Eye className="w-4 h-4 text-red-600" />}>
 					{DESC.VALID_NOT_HIGHLIGHTED}
@@ -114,7 +116,7 @@ const GameSettings = () => {
 				</DescriptionRow>
 			</div>
 		),
-		[Difficulty.Hard]: (
+		[Difficulty.Expert]: (
 			<div className="space-y-1.5">
 				<DescriptionRow icon={<Eye className="w-4 h-4 text-red-600" />}>
 					{DESC.VALID_NOT_HIGHLIGHTED}
@@ -127,7 +129,7 @@ const GameSettings = () => {
 				</DescriptionRow>
 			</div>
 		),
-		[Difficulty.Expert]: (
+		[Difficulty.Grandmaster]: (
 			<div className="space-y-1.5">
 				<DescriptionRow icon={<Eye className="w-4 h-4 text-red-600" />}>
 					{DESC.VALID_NOT_HIGHLIGHTED}
@@ -145,21 +147,21 @@ const GameSettings = () => {
 	// Get difficulty color class
 	const getDifficultyColorClass = () => {
 		switch (difficulty) {
-			case Difficulty.Easy:
-				return "text-green-600";
-			case Difficulty.Medium:
-				return "text-amber-600";
-			case Difficulty.Hard:
-				return "text-red-600";
+			case Difficulty.Novice:
+				return "text-green-600 dark:text-green-500";
+			case Difficulty.Competitor:
+				return "text-amber-600 dark:text-amber-500";
 			case Difficulty.Expert:
-				return "text-fuchsia-600";
+				return "text-red-600 dark:text-red-500";
+			case Difficulty.Grandmaster:
+				return "text-fuchsia-600 dark:text-fuchsia-500";
 			default:
-				return "text-green-600";
+				return "text-green-600 dark:text-green-500";
 		}
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild>
 				<div className="flex">
 					<Button
@@ -167,7 +169,7 @@ const GameSettings = () => {
 						className="flex gap-2 items-center rounded-r-none border-r-0"
 						onClick={() => {
 							setActiveTab("board");
-							setOpen(true);
+							onOpenChange(true);
 						}}
 					>
 						<Grid2x2 className="w-4 h-4" aria-hidden="true" />
@@ -180,7 +182,7 @@ const GameSettings = () => {
 						className="flex gap-2 items-center rounded-l-none"
 						onClick={() => {
 							setActiveTab("difficulty");
-							setOpen(true);
+							onOpenChange(true);
 						}}
 					>
 						<Crown className="w-4 h-4" aria-hidden="true" />
@@ -295,7 +297,7 @@ const GameSettings = () => {
 							// Apply difficulty
 							setDifficulty(selectedDifficulty);
 
-							setOpen(false);
+							onOpenChange(false);
 						}}
 					>
 						Apply

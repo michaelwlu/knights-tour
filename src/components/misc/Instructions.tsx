@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { GITHUB_URL, WIKIPEDIA_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { BookOpen, Code2, HelpCircle } from "lucide-react";
+import { BookOpen, Code2, HelpCircle, Settings } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -17,9 +17,14 @@ import {
 interface InstructionsProps {
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
+	onOpenSettings?: () => void;
 }
 
-const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
+const Instructions = ({
+	open,
+	onOpenChange,
+	onOpenSettings,
+}: InstructionsProps = {}) => {
 	// Default to "Click" and update based on media query
 	const [actionWord, setActionWord] = useState("Click");
 	// Match mobile devices (screen width less than 768px)
@@ -46,7 +51,7 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="mt-1 space-y-6">
-					<ul className="space-y-4 text-base text-foreground/80">
+					<ul className="space-y-4 text-base text-foreground/90">
 						<li className={cn("flex gap-3 items-start")}>
 							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-6 h-6 mt-0.5 flex-shrink-0" />
 							<span>
@@ -72,40 +77,55 @@ const Instructions = ({ open, onOpenChange }: InstructionsProps = {}) => {
 								square can only be visited once during your tour
 							</span>
 						</li>
+
 						<li className={cn("flex gap-3 items-start")}>
-							<div className="rounded-full bg-amber-200 dark:bg-amber-800 w-6 h-6 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs font-bold">
-								3
+							<div className="rounded-full bg-red-200 dark:bg-red-800 w-6 h-6 mt-0.5 flex-shrink-0 flex items-center justify-center">
+								<span className="text-xs font-bold">⚙️</span>
 							</div>
 							<span>
-								<strong>Numbers show move order</strong> - red squares indicate
-								dead ends with no valid moves
+								<strong>Customize the difficulty</strong> - adjust board size
+								and game mode in the settings
 							</span>
 						</li>
 					</ul>
 
 					<div className="flex gap-3 justify-between w-full">
-						<Button asChild size="sm" variant="outline" className="flex-1/2">
+						<Button asChild size="sm" variant="outline" className="flex-1/3">
 							<Link
 								href={WIKIPEDIA_URL}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="flex gap-1 items-center"
+								className="flex gap-1.5 items-center"
 							>
 								<BookOpen className="h-3.5 w-3.5" />
-								Wikipedia
+								Wiki
 							</Link>
 						</Button>
-						<Button asChild size="sm" variant="outline" className="flex-1/2">
+						<Button asChild size="sm" variant="outline" className="flex-1/3">
 							<Link
 								href={GITHUB_URL}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="flex gap-1 items-center"
+								className="flex gap-1.5 items-center"
 							>
 								<Code2 className="h-3.5 w-3.5" />
-								View Source
+								Source
 							</Link>
 						</Button>
+						{onOpenSettings && (
+							<Button
+								onClick={() => {
+									onOpenSettings();
+									onOpenChange?.(false);
+								}}
+								size="sm"
+								variant="default"
+								className="flex gap-1.5 items-center flex-1/3"
+							>
+								<Settings className="h-3.5 w-3.5" />
+								Settings
+							</Button>
+						)}
 					</div>
 				</div>
 			</DialogContent>

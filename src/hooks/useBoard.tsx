@@ -68,13 +68,13 @@ const useBoard = ({
 	// --- Hint System State ---
 	const maxHints = useMemo(() => {
 		switch (difficulty) {
-			case Difficulty.Easy:
+			case Difficulty.Novice:
 				return 5;
-			case Difficulty.Medium:
+			case Difficulty.Competitor:
 				return 4;
-			case Difficulty.Hard:
-				return 3;
 			case Difficulty.Expert:
+				return 3;
+			case Difficulty.Grandmaster:
 				return 0;
 			default:
 				return 3;
